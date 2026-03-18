@@ -2,287 +2,138 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BCA Department - Notice Board</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="Notice.css" />
+    <title>Notice Details</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Oswald', sans-serif;
+            background: #f0f8ff;
+            margin: 0;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg,#1e3d59,#3a6ea5);
+            color: #fff;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .notice-wrapper {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .notice-detail-card {
+            background-color: #e6f2f1;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+            .notice-detail-card h2 {
+                color: #1e3d59;
+                margin-bottom: 15px;
+            }
+
+            .notice-detail-card p {
+                color: #2a7f62;
+                font-size: 1.05rem;
+                line-height: 1.7;
+            }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 22px;
+            background: linear-gradient(135deg,#1e3d59,#3a6ea5);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+        }
+
+            .back-btn:hover {
+                color: white;
+            }
+    </style>
 </head>
+
 <body>
 
-    <div class="container">
+    <div class="page-header">
+        <h1>Notice Details</h1>
+        <p>Official College Announcement</p>
+    </div>
 
-        <!-- Header -->
-        <div class="notice-header">
-            <h1><i class="fas fa-bullhorn"></i> Department Notice Board</h1>
-            <p>Stay updated with the latest announcements from BCA Department</p>
-        </div>
+    <div class="notice-wrapper">
+        <div class="notice-detail-card">
+            <h2 id="noticeTitle">Loading...</h2>
+            <p id="noticeContent"></p>
 
-        <!-- Search & Filter -->
-        <div class="filter-bar">
-            <div class="search-box">
-                <input type="text" placeholder="Search notices...">
-                <i class="fas fa-search"></i>
-            </div>
-            <button class="filter-btn active" data-category="all"><i class="fas fa-filter"></i> All</button>
-            <button class="filter-btn" data-category="academic"><i class="fas fa-book"></i> Academic</button>
-            <button class="filter-btn" data-category="event"><i class="fas fa-calendar-alt"></i> Events</button>
-            <button class="filter-btn" data-category="exam"><i class="fas fa-graduation-cap"></i> Exams</button>
-            <button class="filter-btn" data-category="general"><i class="fas fa-info-circle"></i> General</button>
-        </div>
-
-        <!-- Table Grid -->
-        <div class="notice-table-container">
-            <table class="notice-table">
-                <!-- Table Header -->
-                <thead class="table-header">
-                    <tr>
-                        <th>Date</th>
-                        <th>Notice Title</th>
-                        <th>Category</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <!-- Table Body -->
-                <tbody id="noticeTableBody">
-                    <!-- Rows will be populated by JavaScript -->
-                </tbody>
-            </table>
+            <a href="index.html" class="back-btn">← Back to Notice Board</a>
         </div>
     </div>
 
-    <!-- Notice Detail Modal -->
-    <div class="modal" id="noticeModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-file-alt"></i> Notice Details</h2>
-                <button class="close-modal" onclick="closeModal()">&times;</button>
-            </div>
-
-            <!-- PDF Preview Container - Full Screen -->
-            <div class="pdf-preview" id="pdfPreviewContainer">
-                <embed src="" type="application/pdf" width="100%" height="100%">
-            </div>
-
-            <!-- Download Button Container - Centered at Bottom -->
-            <div class="btn-download-container">
-                <button class="btn-download" onclick="downloadFile()">
-                    <i class="fas fa-download"></i> Download PDF
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- JavaScript for Functionality -->
     <script>
-        // ============================================
-        // NOTICE BOARD - READ FROM LOCALSTORAGE
-        // ============================================
+        // Get notice ID from URL
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
 
-        // 1. Load data from LocalStorage
-        let notices = JSON.parse(localStorage.getItem('notices')) || [];
-        let currentNotice = null;
-        let pdfBlobUrl = null;
-
-        // 2. DOM Elements
-        const tableBody = document.getElementById('noticeTableBody');
-        const searchInput = document.querySelector('.search-box input');
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const modal = document.getElementById('noticeModal');
-        const pdfPreviewContainer = document.getElementById('pdfPreviewContainer');
-
-        // 3. Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            renderTable(notices);
-        });
-
-        // 4. Render Table Function
-        function renderTable(data) {
-            tableBody.innerHTML = '';
-
-            if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">No notices found.</td></tr>';
-                return;
+        // All Notices Data
+        const notices = {
+            1: {
+                title: "Admission Open for 2025–26",
+                content: "Admissions are now open for Undergraduate and Postgraduate courses. Interested students are advised to apply before the deadline. Please visit the admission office or official website for details."
+            },
+            2: {
+                title: "Semester Exam Schedule Released",
+                content: "The semester examination schedule has been officially released. Students can check the timetable on the notice board."
+            },
+            3: {
+                title: "New Workshops Coming Soon",
+                content: "The college will organize new technical and skill development workshops in the coming weeks."
+            },
+            4: {
+                title: "Library Timings Updated",
+                content: "Library timings have been updated. New timings: 8:00 AM to 6:00 PM."
+            },
+            5: {
+                title: "Student Council Elections 2026",
+                content: "Student council elections will be conducted next month. Interested candidates may apply."
+            },
+            6: {
+                title: "Internship Opportunities for BCA Students",
+                content: "Several companies are offering internship opportunities for BCA students."
+            },
+            7: {
+                title: "Guest Lecture on AI & Machine Learning",
+                content: "A special guest lecture on AI and Machine Learning will be conducted soon."
+            },
+            8: {
+                title: "Sports Day Announcement",
+                content: "Annual sports day events will be organized next month."
+            },
+            9: {
+                title: "Scholarship Applications Open",
+                content: "Students can now apply for various scholarship programs."
+            },
+            10: {
+                title: "Annual Tech Fest Registration",
+                content: "Registration for the annual tech fest is now open."
             }
+        };
 
-            data.forEach(notice => {
-                const row = document.createElement('tr');
-                row.classList.add('table-row');
-
-                let badgeClass = notice.category;
-                if (notice.isUrgent) badgeClass = 'urgent';
-
-                row.innerHTML = `
-            <td class="col-date">
-                <i class="fas fa-calendar-alt"></i> ${formatDate(notice.date)}
-            </td>
-            <td class="col-title">
-                <span>${notice.title}</span>
-                ${notice.isUrgent ? '<i class="fas fa-exclamation-triangle urgent-icon" title="Urgent Notice"></i>' : ''}
-            </td>
-            <td class="col-category">
-                <span class="category-badge ${badgeClass}">${notice.category}</span>
-            </td>
-            <td class="col-action">
-                <a href="#" class="btn-view" onclick="viewNotice(${notice.id})">View</a>
-            </td>
-        `;
-                tableBody.appendChild(row);
-            });
+        // Display Notice
+        if (notices[id]) {
+            document.getElementById("noticeTitle").innerText = notices[id].title;
+            document.getElementById("noticeContent").innerText = notices[id].content;
+        } else {
+            document.getElementById("noticeTitle").innerText = "Notice Not Found";
+            document.getElementById("noticeContent").innerText = "Please select a valid notice from the Notice Board.";
         }
-
-        // 5. Helper: Format Date
-        function formatDate(dateString) {
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString('en-US', options);
-        }
-
-        // 6. Helper: Extract Base64 from Data URL
-        function extractBase64(dataURL) {
-            return dataURL.split(',')[1];
-        }
-
-        // 7. Helper: Convert Base64 to Binary String
-        function base64ToBinary(base64) {
-            return atob(base64);
-        }
-
-        // 8. View Notice Function (Opens Modal with PDF)
-        function viewNotice(id) {
-            const notice = notices.find(n => n.id === id);
-            if (notice) {
-                currentNotice = notice;
-
-                // Use actual PDF content if available
-                let pdfContent = '';
-                if (notice.fileContent) {
-                    pdfContent = notice.fileContent;
-                } else {
-                    pdfContent = generatePDF(notice.title);
-                }
-
-                // Revoke previous blob URL if exists
-                if (pdfBlobUrl) {
-                    URL.revokeObjectURL(pdfBlobUrl);
-                }
-
-                // Convert Base64 to Blob
-                const base64 = extractBase64(pdfContent);
-                const binaryString = base64ToBinary(base64);
-                const blob = new Blob([binaryString], { type: 'application/pdf' });
-                pdfBlobUrl = URL.createObjectURL(blob);
-
-                // Use embed instead of iframe (less toolbar)
-                pdfPreviewContainer.innerHTML = `
-            <embed src="${pdfBlobUrl}" type="application/pdf" width="100%" height="100%" oncontextmenu="return false;">
-        `;
-
-                // Disable right-click on PDF
-                const embed = pdfPreviewContainer.querySelector('embed');
-                if (embed) {
-                    embed.oncontextmenu = function () { return false; };
-                }
-
-                // Show modal
-                modal.classList.add('active');
-            }
-        }
-
-        // 9. Helper: Generate PDF Content (Fallback)
-        function generatePDF(title) {
-            return `%PDF-1.4
-1 0 obj
-<< /Type /Catalog /Pages 2 0 R >>
-endobj
-2 0 obj
-<< /Type /Pages /Kids [3 0 R] /Count 1 >>
-endobj
-3 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
-endobj
-4 0 obj
-<< /Length 100 >>
-stream
-BT
-/F1 24 Tf
-100 700 Td
-(${title}) Tj
-ET
-endstream
-endobj
-5 0 obj
-<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
-endobj
-xref
-0 6
-0000000000 65535 f 
-0000000009 00000 n 
-0000000058 00000 n 
-0000000115 00000 n 
-0000000214 00000 n 
-0000000364 00000 n 
-trailer
-<< /Size 6 /Root 1 0 R >>
-startxref
-441
-%%EOF`;
-        }
-
-        // 10. Close Modal Function
-        function closeModal() {
-            modal.classList.remove('active');
-            currentNotice = null;
-            if (pdfBlobUrl) {
-                URL.revokeObjectURL(pdfBlobUrl);
-                pdfBlobUrl = null;
-            }
-            pdfPreviewContainer.innerHTML = '';
-        }
-
-        // 11. Download File Function
-        function downloadFile() {
-            if (currentNotice && pdfBlobUrl) {
-                const link = document.createElement('a');
-                link.href = pdfBlobUrl;
-                link.download = currentNotice.file || 'notice.pdf';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        }
-
-        // 12. Close Modal When Clicking Outside
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-
-        // 13. Search Functionality
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const filtered = notices.filter(n =>
-                n.title.toLowerCase().includes(searchTerm)
-            );
-            renderTable(filtered);
-        });
-
-        // 14. Filter Button Functionality
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const category = btn.getAttribute('data-category');
-
-                if (category === 'all') {
-                    renderTable(notices);
-                } else {
-                    const filtered = notices.filter(n => n.category === category);
-                    renderTable(filtered);
-                }
-            });
-        });
     </script>
+
 </body>
 </html>
