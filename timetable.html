@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Time Table - Student View</title>
+    <link rel="stylesheet" href="TimeTable.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Time Table</h1>
+        <a href="TTupload.html" class="add-btn">+Add Time Table</a>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">Available Time Tables</h2>
+
+        <table id="timetableList">
+            <thead>
+                <tr>
+                    <th>Time Table Name</th>
+                    <th>Upload Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="timetableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" class="modal-title"></h2>
+            <iframe id="pdfViewer" src="" style="width:100%; height:400px; border:none;"></iframe>
+            <div class="download-section">
+                <button id="modalDownloadBtn" class="download-btn" onclick="downloadFromModal()">Download Time Table</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize from localStorage (Match keys with Admin Panel)
+        let timetables = JSON.parse(localStorage.getItem('timetables')) || [];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadTimetables();
+        });
+
+        function loadTimetables() {
+            const tbody = document.getElementById('timetableBody');
+            const table = document.getElementById('timetableList');
+
+            tbody.innerHTML = '';
+
+            if (timetables.length === 0) {
+                table.style.display = 'none';
+                tbody.innerHTML = '<tr><td colspan="3" class="no-data">No timetables available</td></tr>';
+                return;
+            }
+
+            table.style.display = 'table';
+
+            timetables.forEach(function (timetable) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${timetable.name}</td>
+                        <td>${timetable.date}</td> <td>
+                            <div class="action-buttons">
+                                <button class="view-btn" onclick="viewTimetable(${timetable.id})">View</button>
+                                <button class="download-btn" onclick="downloadTimetable(${timetable.id})">Download</button>
+                            </div>
+                        </td>
+                    `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function viewTimetable(id) {
+            const timetable = timetables.find(t => t.id === id);
+            if (!timetable) return;
+
+            document.getElementById('modalTitle').textContent = timetable.name;
+            // PDF needs to be set in iframe src
+            document.getElementById('pdfViewer').src = timetable.pdf;
+            document.getElementById('modalDownloadBtn').setAttribute('data-id', id);
+            document.getElementById('viewModal').style.display = 'block';
+        }
+
+        function downloadTimetable(id) {
+            const timetable = timetables.find(t => t.id === id);
+            // Changed from imageData to pdf
+            if (!timetable || !timetable.pdf) {
+                alert('No timetable available for download');
+                return;
+            }
+
+            const link = document.createElement('a');
+            link.href = timetable.pdf;
+            // Set download attribute with .pdf extension
+            link.download = timetable.name.replace(/\s+/g, '_') + '.pdf';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function downloadFromModal() {
+            const id = parseInt(document.getElementById('modalDownloadBtn').getAttribute('data-id'));
+            downloadTimetable(id);
+        }
+
+        function closeModal() {
+            document.getElementById('viewModal').style.display = 'none';
+            document.getElementById('pdfViewer').src = "";
+        }
+
+        window.onclick = function (event) {
+            const modal = document.getElementById('viewModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
