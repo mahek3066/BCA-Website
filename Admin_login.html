@@ -173,97 +173,94 @@
     
 
     <script>
-        const form = document.getElementById("loginForm");
-        const email = document.getElementById("email");
-        const password = document.getElementById("password");
+       const form = document.getElementById("loginForm");
 
-        const emailError = document.getElementById("emailError");
-        const passwordError = document.getElementById("passwordError");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const numberRegex = /[0-9]/;
+const emailError = document.getElementById("emailError");
+const passwordError = document.getElementById("passwordError");
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const numberRegex = /[0-9]/;
 
+form.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-        form.addEventListener("submit", async function (e) {
-            e.preventDefault();
+    let isValid = true;
 
-            let isValid = true;
+    const emailValue = email.value.trim();
+    const passwordValue = password.value.trim();
 
-            // Email validation
-            if (email.value.trim() === "") {
-                emailError.textContent = "Email is required";
+    // EMAIL VALIDATION
+    if (emailValue === "") {
+        emailError.textContent = "Email is required";
+        emailError.style.display = "block";
+        isValid = false;
+    } else if (!emailRegex.test(emailValue)) {
+        emailError.textContent = "Enter a valid email address";
+        emailError.style.display = "block";
+        isValid = false;
+    } else {
+        emailError.style.display = "none";
+    }
 
-                emailError.style.color = "red";
-                emailError.style.display = "block";
-                isValid = false;
-            } else if (!emailRegex.test(email.value)) {
-                emailError.textContent = "Enter a valid email address";
-                emailError.style.color = "red";
-                emailError.style.display = "block";
-                isValid = false;
-            } else {
-                emailError.style.display = "none";
-            }
+    // PASSWORD VALIDATION
+    if (passwordValue === "") {
+        passwordError.textContent = "Password is required";
+        passwordError.style.display = "block";
+        isValid = false;
+    } else if (passwordValue.length < 6) {
+        passwordError.textContent = "Password must be at least 6 characters";
+        passwordError.style.display = "block";
+        isValid = false;
+    } else if (!numberRegex.test(passwordValue)) {
+        passwordError.textContent = "Password must contain at least one number";
+        passwordError.style.display = "block";
+        isValid = false;
+    } else {
+        passwordError.style.display = "none";
+    }
 
-            // Password validation
-            if (password.value.trim() === "") {
-                passwordError.textContent = "Password is required";
-                passwordError.style.color = "red";
-                passwordError.style.display = "block";
-                isValid = false;
-            } else if (password.value.length < 6) {
-                passwordError.textContent = "Password must be at least 6 characters";
-                passwordError.style.color = "red";
-                passwordError.style.display = "block";
-                isValid = false;
-            } else if (!numberRegex.test(password.value)) {
-                passwordError.textContent = "Password must contain at least one number";
-                passwordError.style.color = "red";
-                passwordError.style.display = "block";
-                isValid = false;
-            } else {
-                passwordError.style.display = "none";
-            }
+    if (!isValid) return;
 
-            if (!isValid) return;
-
-    
-    console.log("📩 Email entered:", email);
-    alert("Submitting request...");
+    console.log(" Email:", emailValue);
+    console.log(" Password:", passwordValue);
 
     try {
-        const response = await fetch("https://localhost:7121/api/Login/forgot-password", {
+        const response = await fetch("https://localhost:7121/api/Login/login", {
             method: "POST",
-            headers: {   // ✅ FIXED (you missed this)
+            headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ email: email })
+            body: JSON.stringify({
+                email: emailValue,
+                password: passwordValue
+            })
         });
 
-        console.log("🌐 Response status:", response.status);
+        console.log(" Status:", response.status);
 
         const data = await response.json();
-
-        console.log("📦 Response data:", data);
-        alert("API Response: " + JSON.stringify(data));
+        console.log("Response:", data);
 
         if (response.ok) {
-            const token = data.resetToken;
+            alert("Login successful!");
 
-            console.log("🔑 Token received:", token);
-            alert("Token received! Redirecting...");
+            // Example: store token (if backend sends it)
+            if (data.token) {
+                localStorage.setItem("token", data.token);
+            }
 
-            // ✅ REDIRECT
-            window.location.href =
-                `reset.html?email=${encodeURIComponent(email)}&token=${token}`;
+            // Redirect to dashboard
+            window.location.href = "dashboard.html";
+
         } else {
-            console.warn("❌ API Error:", data.message);
-            alert(data.message || "Error from API");
+            alert(data.message || " Invalid email or password");
         }
 
     } catch (err) {
-        console.error("🔥 Fetch error:", err);
+        console.error(" Fetch error:", err);
         alert("Server error: " + err.message);
     }
 });
