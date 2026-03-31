@@ -1,0 +1,1063 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Upload - NSS Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Header Styles - BUTTON ON RIGHT */
+        .header {
+            background: #1e3d59;
+            color: white;
+            padding: 20px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Add Photo Button - Right Aligned */
+        .add-photo-btn {
+            background: #ffffff;
+            color: #1e3d59;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .add-photo-btn:hover {
+                background: #F7FAFF;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            }
+
+        /* MODAL STYLES - LIKE NOTICE ADMIN */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+            .modal.active {
+                display: flex;
+            }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 900px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            border-bottom: 1px solid #e9ecef;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+            border-radius: 20px 20px 0 0;
+        }
+
+            .modal-header h2 {
+                margin: 0;
+                color: #1e3d59;
+                font-size: 24px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+        .close-modal {
+            background-color: #ffffff;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+            .close-modal:hover {
+                background: #f8f9fa;
+                color: #dc3545;
+            }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        /* Gallery Management - ALWAYS VISIBLE NOW */
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        /* Table Grid Styles */
+        .table-grid {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+            .table-grid th {
+                background: #1e3d59;
+                color: white;
+                padding: 15px 12px;
+                text-align: left;
+                font-weight: 600;
+                font-size: 20px;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+
+            .table-grid td {
+                padding: 12px;
+                border-bottom: 1px solid #eee;
+                vertical-align: middle;
+                font-size: 20px;
+            }
+
+            .table-grid tr:hover {
+                background: #f8f9ff;
+                transform: scale(1.01);
+                transition: all 0.2s ease;
+            }
+
+            .table-grid tr:last-child td {
+                border-bottom: none;
+            }
+
+            .table-grid img {
+                width: 60px;
+                height: 60px;
+                object-fit: cover;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                border: 2px solid #e9ecef;
+            }
+
+            .table-grid .category-badge {
+                display: inline-block;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 500;
+                color: white;
+            }
+
+            .table-grid .date {
+                font-size: 20px;
+                color: #666;
+                background: #f8f9fa;
+                padding: 4px 8px;
+                border-radius: 4px;
+            }
+
+            .table-grid .action-btn {
+                padding: 6px 12px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: all 0.2s ease;
+                margin: 0 2px;
+            }
+
+            .table-grid .remove-btn {
+                background: #dc3545;
+                color: white;
+            }
+
+                .table-grid .remove-btn:hover {
+                    background: #c82333;
+                    transform: translateY(-1px);
+                }
+
+            .table-grid .empty-state {
+                text-align: center;
+                padding: 40px;
+                color: #666;
+                font-style: italic;
+            }
+
+        /* Form Styles - INSIDE MODAL */
+        .message {
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+            font-weight: 500;
+        }
+
+            .message.success {
+                background: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 600;
+                color: #333;
+            }
+
+        input[type="file"], select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+            input[type="file"]:focus, select:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+        .modal button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+            background: #e9ecef;
+            color: white;
+        }
+
+            .modal button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            }
+
+        .clear-btn {
+            background: #1e3d59;
+            color: white;
+        }
+
+            .clear-btn:hover {
+                background: #1e3d59;
+            }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #1e3d59;
+        }
+
+        .action-buttons {
+            margin-top: 1px;
+        }
+
+        h3 {
+            color: #1e3d59;
+            font-size: 25px;
+        }
+
+        .stats-info {
+            background: #e9ecef;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .gallery-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #3a6ea5;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+            .gallery-link:hover {
+                background: #1e3d59;
+                transform: translateY(-2px);
+            }
+
+        /* Delete Confirmation */
+        .delete-confirm-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+        }
+
+        .delete-confirm-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 1001;
+            display: none;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        /* Category Grid */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .category-cover-card {
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+            .category-cover-card:hover {
+                border-color: #1e3d59;
+                transform: translateY(-5px);
+            }
+
+        .category-badge {
+            font-size: 20px;
+        }
+
+        .cover-preview {
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            background: #f8f9fa;
+        }
+
+            .cover-preview img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 12px;
+            }
+
+            .cover-preview .icon {
+                font-size: 48px;
+                margin-bottom: 10px;
+            }
+
+        .remove-cover-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .cover-upload {
+            margin-top: 10px;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #1e3d59;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .upload-btn:hover {
+                background: #5a67d8;
+                transform: translateY(-1px);
+            }
+
+
+        /* Queue Table INSIDE MODAL */
+        .queue-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .header-left, .header-right {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .add-photo-btn {
+                padding: 10px 20px;
+                font-size: 15px;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .table-grid img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .modal-content {
+                width: 98%;
+                margin: 10px;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            conform
+    </style>
+</head>
+<body>
+
+    <!-- Header with Add Photo Button on RIGHT -->
+    <div class="header">
+        <div class="header-left">
+            <div>
+                <h1>📸 NSS Gallery Admin Panel</h1>
+                <p>Manage your NSS gallery photos and category covers</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <button id="addPhotoBtn" class="add-photo-btn" onclick="openUploadModal()">
+                <i class="fas fa-plus"></i> Add Gallery Photo
+            </button>
+        </div>
+    </div>
+
+    <!-- UPLOAD MODAL - LIKE NOTICE ADMIN -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-upload"></i> 📤 Upload Photos</h2>
+                <button class="close-modal" onclick="closeUploadModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="message" class="message"></div>
+
+                <!-- Upload Form -->
+                <div class="form-group">
+                    <label>Select Images (Select multiple at once):</label>
+                    <input type="file" id="imageInput" accept="image/*" multiple onchange="clearImageError()">
+                    <div id="imageError" class="field-error" style="display:none; color:#dc3545; font-size:14px;">Please select at least one image!</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Category:</label>
+                    <select id="categorySelect">
+                        <option value="Blood Donation">🩸 Blood Donation Camp</option>
+                        <option value="Tree Plantation">🌱 Tree Plantation Drive</option>
+                        <option value="Clean-up">🧹 Clean-up Drive</option>
+                        <option value="Health">🏥 Health Camp</option>
+                        <option value="Literacy">📚 Literacy Program</option>
+                        <option value="NSS Camp">⛺ NSS Camp</option>
+                        <option value="Women Empowerment">👩‍🎓 Women Empowerment</option>
+                        <option value="Old Age Home">👴 Old Age Home</option>
+                        <option value="Road Safety">🚦 Road Safety</option>
+                        <option value="Other">📌 Other</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button onclick="resetForm()" class="clear-btn" style="background-color:#1e3d59">🗑️ Reset</button>
+                    <button onclick="processFiles()" style="background-color:#1e3d59">✅ Add to Queue</button>
+                    <button onclick="savePhotos()" style="background: #28a745;">💾 Save to Gallery</button>
+                </div>
+
+                <!-- Queue Table -->
+                <div class="queue-section">
+                    <h3>🖼️ Queue: <span id="queueCount">0</span> photos</h3>
+                    <table class="table-grid" id="queueTable">
+                        <thead>
+                            <tr>
+                                <th>Preview</th>
+                                <th>Category</th>
+                                <th>Date Added</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="queueTableBody">
+                            <tr class="empty-state">
+                                <td colspan="4">No photos in queue. Select images above!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Management Section - ALWAYS VISIBLE -->
+    <div class="admin-container" id="gallerySection">
+        <div class="action-buttons">
+            <h3>🗑️ Manage Gallery</h3>
+
+            <table class="table-grid" id="galleryTable" style="margin-top:20px;">
+                <thead>
+                    <tr>
+                        <th>Preview</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="galleryTableBody">
+                    <tr class="empty-state">
+                        <td colspan="4">No photos in gallery!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 25px;">
+            <a href="NSSgallery.html" class="gallery-link">👁️ View Live Gallery</a>
+        </div>
+    </div>
+
+    <!-- Category Cover Images Section -->
+    <div class="admin-container" id="coversSection" style="margin-top: 20px;">
+        <h2>🖼️ Category Cover Images</h2>
+        <p style="text-align:center; color:#666;">Upload a cover image for each category to display on the main page</p>
+
+        <div id="categoryCoverGrid" class="category-grid">
+            <!-- Category cover upload cards will appear here -->
+        </div>
+    </div>
+
+    <!-- Custom Delete Confirmation Card -->
+    <div id="deleteConfirmOverlay" class="delete-confirm-overlay" onclick="closeDeleteConfirm()"></div>
+    <div id="deleteConfirmCard" class="delete-confirm-card">
+        <div class="delete-confirm-icon">⚠️</div>
+        <div class="delete-confirm-title" id="deleteConfirmTitle">Delete Photo?</div>
+        <div class="delete-confirm-message" id="deleteConfirmMessage">Are you sure you want to delete this photo? This action cannot be undone.</div>
+        <div class="confirm-btn-group">
+            <button class="confirm-cancel-btn" onclick="closeDeleteConfirm()">Cancel</button>
+            <button class="confirm-delete-btn" onclick="confirmDelete()">Delete</button>
+        </div>
+    </div>
+
+    <script>
+        // ====== 1. CATEGORIES DEFINITION ======
+        const categories = [
+            { id: 'Blood Donation', name: 'Blood Donation Camp', icon: '🩸' },
+            { id: 'Tree Plantation', name: 'Tree Plantation Drive', icon: '🌱' },
+            { id: 'Clean-up', name: 'Clean-up Drive', icon: '🧹' },
+            { id: 'Health', name: 'Health Camp', icon: '🏥' },
+            { id: 'Literacy', name: 'Literacy Program', icon: '📚' },
+            { id: 'NSS Camp', name: 'NSS Camp', icon: '⛺' },
+            { id: 'Women Empowerment', name: 'Women Empowerment', icon: '👩‍🎓' },
+            { id: 'Old Age Home', name: 'Old Age Home', icon: '👴' },
+            { id: 'Road Safety', name: 'Road Safety', icon: '🚦' },
+            { id: 'Other', name: 'Other', icon: '📌' }
+        ];
+
+        // ====== 2. VARIABLES ======
+        let photoQueue = [];
+        let deleteType = '';
+        let deleteIndex = -1;
+        let deleteCoverId = '';
+
+        // ====== 3. INITIALIZE ======
+        document.addEventListener('DOMContentLoaded', function () {
+            updateStats();
+            loadGallery();
+            loadCategoryCoverUploader();
+        });
+
+        // ====== 4. MODAL FUNCTIONS - LIKE NOTICE ADMIN ======
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.add('active');
+            resetForm(); // Reset form when opening
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('active');
+            resetForm();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('uploadModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeUploadModal();
+            }
+        });
+
+        // ====== 5. ERROR FUNCTIONS ======
+        function showFieldError(inputElement, errorDiv, message) {
+            inputElement.classList.add('input-error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function clearFieldError(inputElement, errorDiv) {
+            inputElement.classList.remove('input-error');
+            errorDiv.style.display = 'none';
+        }
+
+        function clearImageError() {
+            const input = document.getElementById('imageInput');
+            const errorDiv = document.getElementById('imageError');
+            clearFieldError(input, errorDiv);
+        }
+
+        // ====== 6. PHOTO UPLOAD FUNCTIONS ======
+        function processFiles() {
+            const input = document.getElementById('imageInput');
+            const category = document.getElementById('categorySelect').value;
+            const files = input.files;
+            const imageError = document.getElementById('imageError');
+
+            clearFieldError(input, imageError);
+
+            if (files.length === 0) {
+                showFieldError(input, imageError, 'Please select at least one image!');
+                return;
+            }
+
+            if (!category) {
+                alert('Please select a category!');
+                return;
+            }
+
+            Array.from(files).forEach(function (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    photoQueue.push({
+                        image: e.target.result,
+                        caption: category,
+                        date: new Date().toLocaleDateString()
+                    });
+                    updateQueueTable();
+                };
+                reader.readAsDataURL(file);
+            });
+
+            showSuccessMessage(`${files.length} photo(s) added to queue!`);
+            input.value = '';
+        }
+
+        function updateQueueTable() {
+            const tbody = document.getElementById('queueTableBody');
+            document.getElementById('queueCount').textContent = photoQueue.length;
+
+            if (photoQueue.length === 0) {
+                tbody.innerHTML = '<tr class="empty-state"><td colspan="4">No photos in queue. Select images above!</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = photoQueue.map(function (photo, index) {
+                const categoryColor = getCategoryColor(photo.caption);
+                return `
+                            <tr>
+                                <td><img src="${photo.image}" alt="Preview"></td>
+                                <td><span class="category-badge" style="background: ${categoryColor}">${photo.caption}</span></td>
+                                <td><span class="date">${photo.date}</span></td>
+                                <td><button class="action-btn remove-btn" onclick="removeFromQueue(${index})"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                        `;
+            }).join('');
+        }
+
+        function removeFromQueue(index) {
+            photoQueue.splice(index, 1);
+            updateQueueTable();
+        }
+
+        function savePhotos() {
+            const imageInput = document.getElementById('imageInput');
+            const imageError = document.getElementById('imageError');
+
+            clearFieldError(imageInput, imageError);
+
+            if (photoQueue.length === 0) {
+                showFieldError(imageInput, imageError, 'Queue is empty! Add photos first.');
+                return;
+            }
+
+            let existingPhotos = [];
+            const stored = localStorage.getItem('nssGallery');
+            if (stored) {
+                existingPhotos = JSON.parse(stored);
+            }
+
+            const updatedPhotos = existingPhotos.concat(photoQueue);
+            localStorage.setItem('nssGallery', JSON.stringify(updatedPhotos));
+
+            showSuccessMessage(`${photoQueue.length} photo(s) saved to gallery!`);
+            photoQueue = [];
+            updateQueueTable();
+            updateStats();
+            loadGallery();
+            closeUploadModal(); // Close modal after successful save
+        }
+
+        function resetForm() {
+            photoQueue = [];
+            updateQueueTable();
+            document.getElementById('imageInput').value = '';
+            document.getElementById('categorySelect').selectedIndex = 0;
+            clearImageError();
+            const message = document.getElementById('message');
+            if (message) message.style.display = 'none';
+        }
+
+        function showSuccessMessage(text) {
+            const msg = document.getElementById('message');
+            if (msg) {
+                msg.textContent = text;
+                msg.className = 'message success';
+                msg.style.display = 'block';
+                setTimeout(function () {
+                    msg.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // ====== 7. GALLERY MANAGEMENT ======
+        function loadGallery() {
+            const tbody = document.getElementById('galleryTableBody');
+            let allPhotos = [];
+            const stored = localStorage.getItem('nssGallery');
+            if (stored) {
+                allPhotos = JSON.parse(stored);
+            }
+
+            if (allPhotos.length === 0) {
+                tbody.innerHTML = '<tr class="empty-state"><td colspan="4">No photos in gallery!</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = allPhotos.map(function (photo, index) {
+                const categoryColor = getCategoryColor(photo.caption);
+                return `
+                            <tr>
+                                <td><img src="${photo.image}" alt="Gallery Photo"></td>
+                                <td><span class="category-badge" style="font-size:16px; background: ${categoryColor}">${photo.caption}</span></td>
+                                <td><span class="date">${photo.date || 'N/A'}</span></td>
+                                <td><button class="action-btn remove-btn" onclick="showDeleteConfirm('single', ${index}, '')"><i class="fas fa-trash"></i></button></td>
+                            </tr>
+                        `;
+            }).join('');
+        }
+
+        // ====== 8. HELPER FUNCTIONS ======
+        function getCategoryColor(category) {
+            const colors = {
+                'Blood Donation': '#dc3545',
+                'Tree Plantation': '#28a745',
+                'Clean-up': '#17a2b8',
+                'Health': '#ffc107',
+                'Literacy': '#6f42c1',
+                'NSS Camp': '#fd7e14',
+                'Women Empowerment': '#e83e8c',
+                'Old Age Home': '#6c757d',
+                'Road Safety': '#20c997',
+                'Other': '#007bff'
+            };
+            return colors[category] || '#6c757d';
+        }
+
+        // ====== 9. DELETE CONFIRMATION FUNCTIONS ======
+        function showDeleteConfirm(type, index, coverId) {
+            deleteType = type;
+            deleteIndex = index;
+            deleteCoverId = coverId;
+
+            const titleEl = document.getElementById('deleteConfirmTitle');
+            const messageEl = document.getElementById('deleteConfirmMessage');
+
+            if (type === 'single') {
+                titleEl.textContent = 'Delete Photo?';
+                messageEl.textContent = 'Are you sure you want to delete this photo? This action cannot be undone.';
+            } else if (type === 'all') {
+                titleEl.textContent = 'Delete All Photos?';
+                messageEl.textContent = 'Are you sure you want to delete ALL photos from the gallery? This action cannot be undone.';
+            } else if (type === 'cover') {
+                titleEl.textContent = 'Remove Cover Image?';
+                messageEl.textContent = `Are you sure you want to remove the cover for ${coverId}?`;
+            }
+
+            document.getElementById('deleteConfirmOverlay').style.display = 'block';
+            document.getElementById('deleteConfirmCard').style.display = 'block';
+        }
+
+        function closeDeleteConfirm() {
+            deleteType = '';
+            deleteIndex = -1;
+            deleteCoverId = '';
+            document.getElementById('deleteConfirmOverlay').style.display = 'none';
+            document.getElementById('deleteConfirmCard').style.display = 'none';
+        }
+
+        function confirmDelete() {
+            if (deleteType === 'single') {
+                let allPhotos = [];
+                const stored = localStorage.getItem('nssGallery');
+                if (stored) {
+                    allPhotos = JSON.parse(stored);
+                }
+
+                if (deleteIndex >= 0 && deleteIndex < allPhotos.length) {
+                    allPhotos.splice(deleteIndex, 1);
+                    localStorage.setItem('nssGallery', JSON.stringify(allPhotos));
+                    loadGallery();
+                    updateStats();
+                }
+            } else if (deleteType === 'all') {
+                localStorage.removeItem('nssGallery');
+                loadGallery();
+                updateStats();
+            } else if (deleteType === 'cover') {
+                let categoryCovers = {};
+                const storedCovers = localStorage.getItem('categoryCovers');
+                if (storedCovers) {
+                    categoryCovers = JSON.parse(storedCovers);
+                }
+
+                delete categoryCovers[deleteCoverId];
+                localStorage.setItem('categoryCovers', JSON.stringify(categoryCovers));
+
+                const cat = categories.find(c => c.id === deleteCoverId);
+                const preview = document.getElementById(`preview-${deleteCoverId}`);
+                if (preview && cat) {
+                    preview.innerHTML = `<span class="icon">${cat.icon}</span><p>${cat.name}</p>`;
+                }
+
+                const uploadDiv = document.querySelector(`#cover-${deleteCoverId}`);
+                if (uploadDiv && uploadDiv.parentElement) {
+                    const removeBtn = uploadDiv.parentElement.querySelector('.remove-cover-btn');
+                    if (removeBtn) removeBtn.remove();
+                }
+
+                loadCategoryCoverUploader();
+            }
+
+            closeDeleteConfirm();
+        }
+
+        function deleteAllGallery() {
+            showDeleteConfirm('all', -1, '');
+        }
+
+        function updateStats() {
+            let allPhotos = [];
+            const stored = localStorage.getItem('nssGallery');
+            if (stored) {
+                allPhotos = JSON.parse(stored);
+            }
+
+            const counts = {};
+            allPhotos.forEach(function (photo) {
+                counts[photo.caption] = (counts[photo.caption] || 0) + 1;
+            });
+
+            let statsText = `Total Photos: ${allPhotos.length}`;
+            if (Object.keys(counts).length > 0) {
+                statsText += ' | ' + Object.entries(counts)
+                    .map(([category, count]) => `${category}: ${count}`)
+                    .join(', ');
+            }
+
+            const statsEl = document.getElementById('statsInfo');
+            if (statsEl) statsEl.textContent = statsText;
+        }
+
+        // ====== 10. CATEGORY COVER FUNCTIONS ======
+        function loadCategoryCoverUploader() {
+            const grid = document.getElementById('categoryCoverGrid');
+            if (!grid) return;
+
+            let categoryCovers = {};
+            const storedCovers = localStorage.getItem('categoryCovers');
+            if (storedCovers) {
+                try {
+                    categoryCovers = JSON.parse(storedCovers);
+                } catch (e) {
+                    console.error('Error parsing category covers:', e);
+                }
+            }
+
+            let html = '';
+            categories.forEach(function (cat) {
+                const currentCover = categoryCovers[cat.id] || '';
+                const coverHtml = currentCover ?
+                    `<img src="${currentCover}" alt="Cover">` :
+                    `<span class="icon">${cat.icon}</span><p>${cat.name}</p>`;
+
+                const removeBtnHtml = currentCover ?
+                    `<button onclick="showDeleteConfirm('cover', -1, '${cat.id}')" class="remove-cover-btn"><i class="fas fa-trash"></i></button>` : '';
+
+                html += `
+                            <div class="category-cover-card">
+                                <div class="cover-preview" id="preview-${cat.id}">${coverHtml}</div>
+                                <div class="cover-upload">
+                                    <label for="cover-${cat.id}" class="upload-btn">📁 Choose Image</label>
+                                    <input type="file" id="cover-${cat.id}" accept="image/*" onchange="saveCategoryCover('${cat.id}', this)" style="display:none;">
+                                    ${removeBtnHtml}
+                                </div>
+                            </div>
+                        `;
+            });
+
+            grid.innerHTML = html;
+        }
+
+        function saveCategoryCover(categoryId, input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imageData = e.target.result;
+                let categoryCovers = {};
+                const storedCovers = localStorage.getItem('categoryCovers');
+                if (storedCovers) {
+                    try {
+                        categoryCovers = JSON.parse(storedCovers);
+                    } catch (err) {
+                        console.error('Error parsing stored covers:', err);
+                    }
+                }
+
+                categoryCovers[categoryId] = imageData;
+                localStorage.setItem('categoryCovers', JSON.stringify(categoryCovers));
+
+                const preview = document.getElementById(`preview-${categoryId}`);
+                if (preview) {
+                    preview.innerHTML = `<img src="${imageData}" alt="Cover">`;
+                }
+
+                const uploadDiv = input.parentElement;
+                if (!uploadDiv.querySelector('.remove-cover-btn')) {
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'remove-cover-btn';
+                    removeBtn.innerText = '✕ Remove';
+                    removeBtn.onclick = () => showDeleteConfirm('cover', -1, categoryId);
+                    uploadDiv.appendChild(removeBtn);
+                }
+
+                showSuccessMessage(`Cover saved for ${categoryId}`);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ====== 11. PREVENT DOUBLE SUBMISSION ======
+        let isProcessing = false;
+        function preventDoubleSubmit(func) {
+            if (isProcessing) return;
+            isProcessing = true;
+            func();
+            setTimeout(() => { isProcessing = false; }, 1000);
+        }
+
+        // Wrap save functions to prevent double submission
+        const originalSavePhotos = savePhotos;
+        savePhotos = () => preventDoubleSubmit(originalSavePhotos);
+    </script>
+</body>
+</html>

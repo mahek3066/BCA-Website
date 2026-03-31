@@ -1,0 +1,582 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notice Admin Panel - BCA Department</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="NoticeAdmin.css" />
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Admin Header -->
+        <div class="admin-header">
+            <div>
+                <h1><i class="fas fa-cog"></i> Notice Admin Panel</h1>
+                <p>Manage and update department notices</p>
+            </div>
+            <div class="admin-actions">
+                <button class="btn btn-primary" onclick="openModal()"><i class="fas fa-plus"></i> Add Notice</button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="fas fa-bullhorn"></i></div>
+                <div class="stat-info">
+                    <h3 id="totalNotices">0</h3>
+                    <p>Total Notices</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <h3 id="activeNotices">0</h3>
+                    <p>Active Notices</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange"><i class="fas fa-clock"></i></div>
+                <div class="stat-info">
+                    <h3 id="pendingNotices">0</h3>
+                    <p>Pending Review</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon red"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="stat-info">
+                    <h3 id="urgentNotices">0</h3>
+                    <p>Urgent Notices</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search & Filter Bar -->
+        <div class="filter-bar">
+            <div class="search-box">
+                <input type="text" placeholder="Search notices...">
+                <i class="fas fa-search"></i>
+            </div>
+            <button class="filter-btn active" data-category="all"><i class="fas fa-filter"></i> All</button>
+            <button class="filter-btn" data-category="academic"><i class="fas fa-book"></i> Academic</button>
+            <button class="filter-btn" data-category="event"><i class="fas fa-calendar-alt"></i> Events</button>
+            <button class="filter-btn" data-category="exam"><i class="fas fa-graduation-cap"></i> Exams</button>
+            <button class="filter-btn" data-category="general"><i class="fas fa-info-circle"></i> General</button>
+        </div>
+
+        <!-- Table Grid -->
+        <div class="notice-table-container">
+            <table class="notice-table">
+                <!-- Table Header -->
+                <thead class="table-header">
+                    <tr>
+                        <th>Date</th>
+                        <th>Notice Title</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <!-- Table Body -->
+                <tbody>
+                    <!-- Rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add/Edit Notice Modal -->
+        <div class="modal" id="noticeModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-plus"></i> Add New Notice</h2>
+                    <button class="close-modal" onclick="closeModal()">&times;</button>
+                </div>
+                <form id="noticeForm">
+                    <input type="hidden" id="noticeId">
+
+                    <div class="form-group">
+                        <label for="noticeTitle">Notice Title *</label>
+                        <input type="text" id="noticeTitle" placeholder="Enter notice title">
+                        <div id="titleError" class="error-message">Please enter a notice title</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="noticeCategory">Category *</label>
+                        <select id="noticeCategory">
+                            <option value="">Select Category</option>
+                            <option value="academic">Academic</option>
+                            <option value="event">Event</option>
+                            <option value="exam">Examination</option>
+                            <option value="general">General</option>
+                            <option value="scholarship">Scholarship</option>
+                            <option value="workshop">Workshop</option>
+                        </select>
+                        <div id="categoryError" class="error-message">Please select a category</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="noticeFile">Upload PDF File *</label>
+                        <input type="file" id="noticeFile" accept=".pdf">
+                        <small style="color: var(--text-light);">Only PDF files are allowed.</small>
+                        <!-- Error Message Element -->
+                        <div id="fileError" class="file-error">Please Enter Only PDF files!</div>
+                        <div id="fileRequiredError" class="error-message">Please upload a PDF file</div>
+                    </div>
+
+                    <div class="form-linebrack">
+                        <input type="checkbox" id="isUrgent"> Mark as Urgent
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn" style="background: #ccc;" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-success">Save Notice</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="delete-modal" id="deleteModal">
+            <div class="delete-modal-content">
+                <h3><i class="fas fa-exclamation-triangle"></i> Confirm Delete</h3>
+                <p>Are you sure you want to delete this notice?</p>
+                <div class="delete-modal-actions">
+                    <button class="btn-delete-cancel" onclick="closeDeleteModal()">Cancel</button>
+                    <button class="btn-delete-confirm" onclick="confirmDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript for Functionality -->
+    <script>
+        // ============================================
+        // NOTICE ADMIN PANEL - WITH LOCALSTORAGE (FIXED EDIT MODE)
+        // ============================================
+
+        // 1. Load data from LocalStorage or use default
+        let notices = JSON.parse(localStorage.getItem('notices')) || [
+            {
+                id: 1,
+                title: "Final Year Project Submission Deadline",
+                date: "2023-10-24",
+                category: "academic",
+                file: "project_deadline.pdf",
+                fileContent: "",
+                isUrgent: true
+            },
+            {
+                id: 2,
+                title: "Midterm Exam Schedule",
+                date: "2023-10-20",
+                category: "exam",
+                file: "midterm_schedule.pdf",
+                fileContent: "",
+                isUrgent: false
+            }
+        ];
+
+        // 2. Save data to LocalStorage whenever it changes
+        function saveToLocalStorage() {
+            localStorage.setItem('notices', JSON.stringify(notices));
+        }
+
+        // 3. Helper: Read File as Base64
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // 4. DOM Elements
+        const tableBody = document.querySelector('.notice-table tbody');
+        const searchInput = document.querySelector('.search-box input');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const modal = document.getElementById('noticeModal');
+        const noticeForm = document.getElementById('noticeForm');
+        const modalTitle = document.querySelector('.modal-header h2');
+        const totalNoticesEl = document.getElementById('totalNotices');
+        const activeNoticesEl = document.getElementById('activeNotices');
+        const pendingNoticesEl = document.getElementById('pendingNotices');
+        const urgentNoticesEl = document.getElementById('urgentNotices');
+        const noticeFileInput = document.getElementById('noticeFile');
+        const fileErrorEl = document.getElementById('fileError');
+
+        // New elements for validation
+        const noticeTitleInput = document.getElementById('noticeTitle');
+        const noticeCategoryInput = document.getElementById('noticeCategory');
+
+        // Error message elements
+        const titleErrorEl = document.getElementById('titleError');
+        const categoryErrorEl = document.getElementById('categoryError');
+        const fileRequiredErrorEl = document.getElementById('fileRequiredError');
+
+        // Delete Modal Elements
+        const deleteModal = document.getElementById('deleteModal');
+        let deleteId = null;
+
+        // NEW: File display element (we'll create this dynamically)
+        let currentFileDisplay = null;
+
+        // 5. Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Admin Panel Initialized');
+            console.log('📊 Notices from LocalStorage:', notices.length);
+
+            renderTable(notices);
+            updateStats();
+        });
+
+        // 6. Render Table Function
+        function renderTable(data) {
+            tableBody.innerHTML = '';
+
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">No notices found.</td></tr>';
+                return;
+            }
+
+            data.forEach(notice => {
+                const row = document.createElement('tr');
+                row.classList.add('table-row');
+
+                let badgeClass = notice.category;
+                if (notice.isUrgent) badgeClass = 'urgent';
+
+                row.innerHTML = `
+                    <td data-label="Date"><i class="fas fa-calendar-alt"></i> ${formatDate(notice.date)}</td>
+                    <td data-label="Notice Title"><span>${notice.title}</span></td>
+                    <td data-label="Category"><span class="category-badge ${badgeClass}">${formatCategory(notice.category)}</span></td>
+                    <td data-label="Status"><span class="category-badge active">Active</span></td>
+                    <td data-label="Actions">
+                        <div class="action-buttons">
+                            <button class="btn-icon btn-edit" onclick="editNotice(${notice.id})" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="btn-icon btn-delete" onclick="openDeleteModal(${notice.id})" title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // NEW: Format category for display
+        function formatCategory(category) {
+            const categoryMap = {
+                'academic': 'Academic',
+                'event': 'Event',
+                'exam': 'Exam',
+                'general': 'General',
+                'scholarship': 'Scholarship',
+                'workshop': 'Workshop',
+                'urgent': 'Urgent'
+            };
+            return categoryMap[category] || category;
+        }
+
+        // 7. Helper: Format Date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+
+        // 8. Helper: Update Stats
+        function updateStats() {
+            totalNoticesEl.textContent = notices.length;
+            activeNoticesEl.textContent = notices.filter(n => !n.isUrgent).length;
+            pendingNoticesEl.textContent = notices.filter(n => n.category === 'exam').length;
+            urgentNoticesEl.textContent = notices.filter(n => n.isUrgent).length;
+            saveToLocalStorage();
+        }
+
+        // 9. Modal Functions
+        function openModal(isEdit = false) {
+            modal.classList.add('active');
+            if (!isEdit) {
+                noticeForm.reset();
+                modalTitle.innerHTML = '<i class="fas fa-plus"></i> Add New Notice';
+                noticeForm.dataset.mode = 'add';
+                document.getElementById('noticeId').value = '';
+                clearFileDisplay();
+                clearFileValidation();
+                clearInputErrors();
+            }
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            clearFileDisplay();
+            clearInputErrors();
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // NEW: Show current file in edit mode
+        function showCurrentFile(fileName) {
+            const fileGroup = document.querySelector('#noticeFile').closest('.form-group');
+
+            // Remove existing file display
+            if (currentFileDisplay) {
+                currentFileDisplay.remove();
+            }
+
+            // Create file display element
+            currentFileDisplay = document.createElement('div');
+            currentFileDisplay.className = 'current-file-display';
+            currentFileDisplay.innerHTML = `
+                <div class="current-file-info">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Current: ${fileName}</span>
+                    <button type="button" class="remove-file-btn" onclick="removeCurrentFile()">
+                        <i class="fas fa-times"></i> Change
+                    </button>
+                </div>
+            `;
+
+            fileGroup.appendChild(currentFileDisplay);
+        }
+
+        // NEW: Remove current file display
+        window.removeCurrentFile = function () {
+            if (currentFileDisplay) {
+                currentFileDisplay.remove();
+                currentFileDisplay = null;
+                noticeFileInput.value = '';
+            }
+        }
+
+        // NEW: Clear file display
+        function clearFileDisplay() {
+            if (currentFileDisplay) {
+                currentFileDisplay.remove();
+                currentFileDisplay = null;
+            }
+        }
+
+        // 10. File Validation Logic
+        function validateFile(input) {
+            const file = input.files[0];
+            if (!file) {
+                clearFileValidation();
+                return;
+            }
+
+            const fileName = file.name.toLowerCase();
+            const isValid = fileName.endsWith('.pdf');
+
+            if (isValid) {
+                clearFileValidation();
+                clearFileDisplay(); // Remove current file display when new file selected
+            } else {
+                fileErrorEl.style.display = 'block';
+                input.classList.add('input-error');
+            }
+        }
+
+        function clearFileValidation() {
+            fileErrorEl.style.display = 'none';
+            noticeFileInput.classList.remove('input-error');
+        }
+
+        function clearInputErrors() {
+            noticeTitleInput.classList.remove('input-error');
+            noticeCategoryInput.classList.remove('input-error');
+            noticeFileInput.classList.remove('input-error');
+            titleErrorEl.classList.remove('show');
+            categoryErrorEl.classList.remove('show');
+            fileRequiredErrorEl.classList.remove('show');
+        }
+
+        // 11. CRUD Operations
+
+        // CREATE / UPDATE
+        noticeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Validation
+            let hasError = false;
+
+            if (!noticeTitleInput.value.trim()) {
+                noticeTitleInput.classList.add('input-error');
+                titleErrorEl.classList.add('show');
+                hasError = true;
+            } else {
+                noticeTitleInput.classList.remove('input-error');
+                titleErrorEl.classList.remove('show');
+            }
+
+            if (!noticeCategoryInput.value) {
+                noticeCategoryInput.classList.add('input-error');
+                categoryErrorEl.classList.add('show');
+                hasError = true;
+            } else {
+                noticeCategoryInput.classList.remove('input-error');
+                categoryErrorEl.classList.remove('show');
+            }
+
+            // For ADD mode: file is required. For EDIT mode: file is optional
+            const isEditMode = noticeForm.dataset.mode === 'edit';
+            const hasFile = noticeFileInput.files.length > 0;
+            const hasCurrentFile = currentFileDisplay !== null;
+
+            if (!isEditMode && !hasFile) {
+                noticeFileInput.classList.add('input-error');
+                fileRequiredErrorEl.classList.add('show');
+                hasError = true;
+            } else {
+                noticeFileInput.classList.remove('input-error');
+                fileRequiredErrorEl.classList.remove('show');
+            }
+
+            if (hasError) {
+                return;
+            }
+
+            // Validate new file if selected
+            const file = noticeFileInput.files[0];
+            if (file && !file.name.toLowerCase().endsWith('.pdf')) {
+                validateFile(noticeFileInput);
+                return;
+            }
+
+            const id = document.getElementById('noticeId').value;
+            const title = document.getElementById('noticeTitle').value;
+            const category = document.getElementById('noticeCategory').value;
+            const isUrgent = document.getElementById('isUrgent').checked;
+
+            let fileName = '';
+            let fileContent = '';
+
+            if (file) {
+                // New file selected
+                fileName = file.name;
+                fileContent = await readFileAsBase64(file);
+            }
+
+            const today = new Date().toISOString().split('T')[0];
+
+            if (noticeForm.dataset.mode === 'add') {
+                const newNotice = {
+                    id: Date.now(),
+                    title,
+                    date: today,
+                    category,
+                    file: fileName,
+                    fileContent: fileContent,
+                    isUrgent
+                };
+                notices.unshift(newNotice);
+            } else {
+                // EDIT mode
+                const index = notices.findIndex(n => n.id == id);
+                if (index !== -1) {
+                    const existingNotice = notices[index];
+
+                    notices[index] = {
+                        id: parseInt(id),
+                        title,
+                        date: existingNotice.date,
+                        category,
+                        file: fileName || existingNotice.file, // Keep existing if no new file
+                        fileContent: fileContent || existingNotice.fileContent, // Keep existing if no new file
+                        isUrgent
+                    };
+                }
+            }
+
+            renderTable(notices);
+            updateStats();
+            closeModal();
+        });
+
+        // FIXED: Edit function - NOW SHOWS CURRENT FILE
+        window.editNotice = function (id) {
+            const notice = notices.find(n => n.id === id);
+            if (notice) {
+                document.getElementById('noticeId').value = notice.id;
+                document.getElementById('noticeTitle').value = notice.title;
+                document.getElementById('noticeCategory').value = notice.category;
+                document.getElementById('isUrgent').checked = notice.isUrgent;
+
+                // 🔥 KEY FIX: Show current file
+                noticeFileInput.value = '';
+                if (notice.file) {
+                    showCurrentFile(notice.file);
+                } else {
+                    clearFileDisplay();
+                }
+
+                clearFileValidation();
+                clearInputErrors();
+
+                modalTitle.innerHTML = '<i class="fas fa-edit"></i> Edit Notice';
+                noticeForm.dataset.mode = 'edit';
+                openModal(true);
+            }
+        };
+
+        // DELETE functions (unchanged)
+        window.openDeleteModal = function (id) {
+            deleteId = id;
+            deleteModal.classList.add('active');
+        };
+
+        window.closeDeleteModal = function () {
+            deleteModal.classList.remove('active');
+            deleteId = null;
+        };
+
+        window.confirmDelete = function () {
+            if (deleteId !== null) {
+                notices = notices.filter(n => n.id !== deleteId);
+                renderTable(notices);
+                updateStats();
+                saveToLocalStorage();
+                closeDeleteModal();
+            }
+        };
+
+        deleteModal.addEventListener('click', (e) => {
+            if (e.target === deleteModal) closeDeleteModal();
+        });
+
+        // 12. Filtering Logic (unchanged)
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filtered = notices.filter(n =>
+                n.title.toLowerCase().includes(searchTerm)
+            );
+            renderTable(filtered);
+        });
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const category = btn.getAttribute('data-category');
+                if (category === 'all') {
+                    renderTable(notices);
+                } else {
+                    const filtered = notices.filter(n => n.category === category);
+                    renderTable(filtered);
+                }
+            });
+        });
+
+        // 13. File Input Change Event
+        noticeFileInput.addEventListener('change', function () {
+            validateFile(this);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sports Department | BCA College</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <style>
+        :root {
+            --primary-color: #1e3d59;
+            --secondary-color: #f39c12;
+            --bg-light: #f4f4f4;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--bg-light);
+        }
+
+        /* Header */
+        header {
+            background: #1e3d59;
+            color: #ffffff;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+            header h1 {
+                font-size: clamp(2rem, 5vw, 3rem);
+                margin-bottom: 15px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            }
+
+        /* Hero Image */
+        .hero-image {
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 5px solid #fff;
+        }
+
+        /* Section Titles */
+        .section-title {
+            position: relative;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+            .section-title::after {
+                content: '';
+                position: absolute;
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 1100px;
+                height: 4px;
+                background: linear-gradient(90deg, var(--secondary-color), #e67e22);
+                border-radius: 2px;
+            }
+
+        /* FIXED: Full Width Content - NO EMPTY SPACE */
+        .full-width-content {
+            width: 100%; /* Full container width */
+            padding-left: 1rem; /* Minimal padding */
+            padding-right: 1rem; /* Minimal padding */
+            margin: 0; /* No margins */
+        }
+
+        .about-text {
+            font-size: 1.1rem; /* Larger text to fill space */
+            line-height: 1.8; /* More line height */
+            text-align: justify; /* Justify to fill lines completely */
+        }
+
+        /* Coach Section */
+        .coach-image img {
+            border: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+            .coach-image img:hover {
+                transform: scale(1.02);
+                box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            }
+
+        .coach-name {
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .coach-title {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        /* Gallery */
+        .gallery-item {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 100%;
+        }
+
+            .gallery-item:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            }
+
+            .gallery-item img {
+                height: 250px;
+                object-fit: cover;
+                transition: transform 0.3s ease;
+            }
+
+            .gallery-item:hover img {
+                transform: scale(1.1);
+            }
+
+        .gallery-caption {
+            background: rgba(0,0,0,0.85);
+            color: white;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .section-title::after {
+                width: 60px;
+            }
+
+            .full-width-content {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="text-center text-white">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-4">Sports Department</h1>
+            <p class="lead fs-2 opacity-90 mb-0">BCA College - Building Champions</p>
+        </div>
+    </header>
+
+    <!-- Hero Image Section -->
+    <section class="py-5">
+        <div class="container text-center">
+            <img src="Sports2.jpg" alt="College Sports" class="hero-image img-fluid mx-auto d-block rounded shadow-lg">
+        </div>
+    </section>
+
+    <!-- FIXED About Sports - FULL WIDTH ORIGINAL CONTENT -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title display-5 fw-bold text-center mb-5">About Sports</h2>
+
+            <!-- FULL WIDTH - NO EMPTY SPACE LEFT/RIGHT -->
+            <div class="row">
+                <div class="col-12 full-width-content">
+                    <div class="about-text fs-5 lh-lg">
+                        <!-- YOUR ORIGINAL PARAGRAPH 1 - FULL WIDTH -->
+                        <p class="lead mb-4">
+                            Sports are an essential part of student life and contribute significantly to overall personality development.
+                            At BCA College, we believe that education is not limited to academics alone. Physical activities and sports
+                            play an equally important role in shaping confident, disciplined, and responsible individuals.
+                            Our comprehensive sports program ensures every student gets equal opportunity to participate and excel.
+                        </p>
+
+                        <!-- YOUR ORIGINAL PARAGRAPH 2 - FULL WIDTH -->
+                        <p class="mb-4">
+                            The Sports Department provides opportunities for students to participate in various indoor and outdoor
+                            games such as Cricket, Football, Basketball, Volleyball, Badminton, and Athletics. Regular practice
+                            sessions, professional coaching support, and competitive tournaments are organized throughout the year
+                            to enhance skills, encourage teamwork, and build competitive spirit among students.
+                        </p>
+
+                        <!-- YOUR ORIGINAL PARAGRAPH 3 - FULL WIDTH -->
+                        <p class="mb-0">
+                            Through sports, students develop leadership qualities, time management skills, sportsmanship, and the
+                            ability to handle both success and failure gracefully. Our goal is to promote a healthy lifestyle and
+                            create a balanced environment where students can excel both academically and physically. Sports at
+                            BCA College is more than just games - it's a way of life that builds future leaders.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coach Section (UNCHANGED) -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title display-5 fw-bold text-center mb-5">Meet Our Coach</h2>
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5 text-center">
+                    <div class="coach-image">
+                        <img src="Jitusir.jpg" alt="Jitu Sir - Sports Coach" class="img-fluid rounded shadow-lg">
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="coach-details">
+                        <h3 class="coach-name h2 mb-4">Jitendra Makavana</h3>
+                        <p class="coach-title h4 mb-4 fs-3">Head Coach - Sports Department</p>
+                        <p class="lead fs-5 mb-4">
+                            We are proud to introduce <strong>Jitendra Sir</strong>, the dedicated Head Coach
+                            of the Sports Department at BCA College. With over 10 years of experience in
+                            sports training and student development, Coach Jitu has been instrumental in
+                            shaping the athletic culture of our college.
+                        </p>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <p class="fs-5 mb-0">
+                                    <strong>Coaching Philosophy:</strong><br>
+                                    Coach Jitu believes in a holistic approach to sports training. He focuses not
+                                    just on physical fitness but also on mental strength, discipline, and character
+                                    building.
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="fs-5 mb-0">
+                                    <strong>Achievements:</strong><br>
+                                    Under his leadership, our college sports teams have won numerous trophies in
+                                    cricket, football, basketball, chess, and athletics.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section (UNCHANGED) -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title display-5 fw-bold text-center mb-5">Sports Gallery</h2>
+            <div class="row g-4" id="sportsGallery">
+                <!-- Photos appear here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script>
+        function loadGallery() {
+            let photos = JSON.parse(localStorage.getItem('sportsGallery') || '[]');
+            let html = '';
+
+            photos.forEach(p => {
+                html += `
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="gallery-item h-100 card border-0 shadow-sm">
+                                        <img src="${p.image}" alt="${p.caption}" class="card-img-top">
+                                        <div class="card-body gallery-caption">
+                                            <h6 class="mb-0">${p.caption}</h6>
+                                        </div>
+                                    </div>
+                                </div>`;
+            });
+
+            if (html === '') {
+                html = `
+                                <div class="col-12">
+                                    <div class="text-center py-5">
+                                        <i class="fas fa-images display-1 text-muted mb-4"></i>
+                                        <h4 class="text-muted">No photos yet!</h4>
+                                        <p class="text-muted">Gallery will be updated soon with exciting sports moments.</p>
+                                    </div>
+                                </div>`;
+            }
+
+            document.getElementById('sportsGallery').innerHTML = html;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadGallery);
+    </script>
+</body>
+</html>

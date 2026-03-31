@@ -1,0 +1,434 @@
+﻿
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    padding: 20px;
+    margin: 0;
+}
+
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h2 {
+    color: #1e3d59;
+    border-bottom: 3px solid #ff9800;
+    padding-bottom: 15px;
+    margin-top: 0;
+}
+
+h3 {
+    color: #1e3d59;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+input[type="file"] {
+    padding: 10px;
+    border: 2px dashed #1e3d59;
+    border-radius: 4px;
+    width: 100%;
+    background: #f9f9f9;
+    transition: all 0.3s;
+}
+
+    input[type="file"].input-error {
+        border: 2px solid #e74c3c !important;
+        background-color: #fff8f8;
+    }
+
+input[type="text"],
+select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 14px;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+    input[type="text"]:focus,
+    select:focus {
+        outline: none;
+        border-color: #1e3d59;
+    }
+
+    input[type="text"].input-error,
+    select.input-error {
+        border-color: #e74c3c !important;
+        background-color: #fff8f8;
+    }
+
+/* RED LINE ERROR MESSAGE STYLE */
+.field-error {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-top: 6px;
+    display: none;
+    font-weight: 600;
+}
+
+/* SUCCESS MESSAGE */
+.message {
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    display: none;
+}
+
+    .message.success {
+        background-color: #d4edda;
+        color: #155724;
+        display: block;
+    }
+
+    /* ERROR MESSAGE BOX (Only for general errors) */
+    .message.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        display: block;
+    }
+
+/* Container for queue with error state */
+#queueContainer.input-error {
+    border: 2px dashed #e74c3c;
+    background-color: #fff8f8;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+button {
+    padding: 12px 25px;
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+}
+
+    button:hover {
+        background-color: #e68900;
+    }
+
+    button.clear-btn {
+        background-color: #dc3545;
+    }
+
+    button.view-btn {
+        background-color: #17a2b8;
+    }
+
+.preview-container, .category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+    min-height: 100px;
+}
+
+.preview-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    background: #eee;
+}
+
+    .preview-item img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .preview-item .info {
+        padding: 8px;
+        background: white;
+        font-size: 11px;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .preview-item .remove-btn {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 22px;
+        text-align: center;
+        padding: 0;
+    }
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #1e3d59;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.info-box {
+    background: #e7f3ff;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border-left: 4px solid #1e3d59;
+}
+
+.gallery-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: #1e3d59;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.action-buttons {
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 2px dashed #ddd;
+}
+
+.stats-info {
+    background: #fff3cd;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.empty-msg {
+    color: #999;
+    text-align: center;
+    padding: 30px;
+    grid-column: 1 / -1;
+}
+
+.category-cover-card {
+    background: #fff;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+}
+
+    .category-cover-card .cover-preview {
+        width: 100%;
+        height: 120px;
+        background: #f5f5f5;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+
+        .category-cover-card .cover-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .category-cover-card .cover-preview .icon {
+            font-size: 30px;
+        }
+
+        .category-cover-card .cover-preview p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            color: #666;
+        }
+
+    .category-cover-card .cover-upload {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .category-cover-card .upload-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        background: #4CAF50;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        width: 100%;
+    }
+
+        .category-cover-card .upload-btn:hover {
+            background: #45a049;
+        }
+
+    .category-cover-card input[type="file"] {
+        display: none;
+    }
+
+    .category-cover-card .remove-cover-btn {
+        display: inline-block;
+        padding: 6px 12px;
+        background: #f44336;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        width: 100%;
+    }
+
+        .category-cover-card .remove-cover-btn:hover {
+            background: #da190b;
+        }
+
+/* DELETE CONFIRMATION CARD STYLES */
+.delete-confirm-overlay {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(3px);
+}
+
+.delete-confirm-card {
+    display: none;
+    position: fixed;
+    z-index: 2001;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.delete-confirm-icon {
+    font-size: 50px;
+    color: #e74c3c;
+    margin-bottom: 15px;
+}
+
+.delete-confirm-title {
+    font-size: 22px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.delete-confirm-message {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.confirm-btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.confirm-delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .confirm-delete-btn:hover {
+        background-color: #c0392b;
+    }
+
+.confirm-cancel-btn {
+    background-color: #95a5a6;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .confirm-cancel-btn:hover {
+        background-color: #7f8c8d;
+    }
+
+@media (max-width: 768px) {
+    .preview-container, .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .preview-container, .category-grid {
+        grid-template-columns: 1fr;
+    }
+}

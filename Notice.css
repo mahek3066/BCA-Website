@@ -230,7 +230,7 @@ body {
 
 .btn-view {
     padding: 8px 16px;
-    background: var(--primary-color);
+    background: #3a6ea5;
     color: var(--white);
     border: none;
     border-radius: 5px;
@@ -243,7 +243,7 @@ body {
 }
 
     .btn-view:hover {
-        background: var(--secondary-color);
+        background: #1e3d59;
         transform: translateY(-2px);
     }
 
@@ -448,7 +448,7 @@ body {
     align-items: center;
     gap: 8px;
     padding: 10px 20px;
-    background: var(--accent-color);
+    background: #27ae60;
     color: var(--white);
     text-decoration: none;
     border-radius: 5px;
@@ -457,5 +457,5 @@ body {
 }
 
     .btn-download:hover {
-        background: #c0392b;
+        background: #219a52;
     }
