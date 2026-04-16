@@ -1,0 +1,307 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Time Table - Student View</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #1e3d59;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+            .header h1 {
+                font-size: 42px;
+                font-weight: bold;
+            }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #1e3d59;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background-color: #1e3d59;
+        }
+
+        th {
+            color: white;
+            padding: 18px 15px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            font-size: 15px;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:hover {
+            background-color: #e8f4f8;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .view-btn {
+            background-color: #3a6ea5;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+            .view-btn:hover {
+                background-color: #1e3d59;
+            }
+
+        .download-btn {
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+            .download-btn:hover {
+                background-color: #219a52;
+            }
+
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 3% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 88vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            z-index: 1;
+        }
+
+            .close:hover {
+                color: #1e3d59;
+            }
+
+        .modal-title {
+            text-align: center;
+            color: #1e3d59;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-right: 40px;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .download-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .download-section .download-btn {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Time Table</h1>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">Available Time Tables</h2>
+
+        <table id="timetableList">
+            <thead>
+                <tr>
+                    <th>Time Table Name</th>
+                    <th>Upload Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="timetableBody">
+                <!-- Timetables will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal for viewing timetable -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" class="modal-title"></h2>
+            <img id="modalImage" class="modal-image" src="" alt="Time Table">
+            <div class="download-section">
+                <button id="modalDownloadBtn" class="download-btn" onclick="downloadFromModal()">Download Time Table</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize timetables from localStorage
+        let timetables = JSON.parse(localStorage.getItem('timetables')) || [];
+
+        // Load timetables on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            loadTimetables();
+        });
+
+        // Load and display timetables
+        function loadTimetables() {
+            const tbody = document.getElementById('timetableBody');
+            tbody.innerHTML = '';
+
+            if (timetables.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" class="no-data">No timetables available</td></tr>';
+                return;
+            }
+
+            timetables.forEach(function (timetable) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${timetable.name}</td>
+                        <td>${timetable.uploadDate}</td>
+                        <td>
+                            <button class="view-btn" onclick="viewTimetable(${timetable.id})">View</button>
+                            <button class="download-btn" onclick="downloadTimetable(${timetable.id})">Download</button>
+                        </td>
+                    `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // View timetable image
+        function viewTimetable(id) {
+            const timetable = timetables.find(t => t.id === id);
+            if (!timetable) return;
+
+            document.getElementById('modalTitle').textContent = timetable.name;
+            document.getElementById('modalImage').src = timetable.imageData;
+            document.getElementById('modalDownloadBtn').setAttribute('data-id', id);
+            document.getElementById('viewModal').style.display = 'block';
+        }
+
+        // Download timetable from table button
+        function downloadTimetable(id) {
+            const timetable = timetables.find(t => t.id === id);
+            if (!timetable || !timetable.imageData) {
+                alert('No timetable available for download');
+                return;
+            }
+
+            // Create download link
+            const link = document.createElement('a');
+            link.href = timetable.imageData;
+            link.download = timetable.name.replace(/\s+/g, '_') + '.jpg';
+            link.target = '_blank';
+
+            // Trigger download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Download timetable from modal
+        function downloadFromModal() {
+            const id = parseInt(document.getElementById('modalDownloadBtn').getAttribute('data-id'));
+            downloadTimetable(id);
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('viewModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('viewModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

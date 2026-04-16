@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>NSS Event</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, white); /* Colorful gradient background */
+            color: white;
+            line-height: 1.8;
+        }
+
+        h1{
+            background:#1e3d59;
+            color:white;
+            text-align: center;
+            margin:0;
+            padding:40px;
+        }
+        h2 {
+            background: #1e3d59;
+            color: white;
+            text-align: center;
+            margin: 30px 0;
+            padding-bottom: 10px;
+        }
+
+
+        section {
+            padding: 40px;
+            margin: 20px auto;
+            max-width: 800px;
+            background: #3a6ea5; /* Semi-transparent for vibrancy */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid #1e3d59; /* Yellow accent border */
+            opacity: 0; /* For fade-in animation */
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+            section.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+            img:hover {
+                transform: scale(1.05); /* Hover animation */
+            }
+
+        .event-image {
+            animation: pulse 2s infinite; /* Pulsing animation */
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #1e3d59; /* Dark heading color for footer */
+            color: white;
+        }
+        /* Responsive */
+        @media (max-width: 600px) {
+            section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NSS Event</h1>
+        <nav>
+            <a href="#info" style="color: #1e3d59; margin: 0 10px;"><b>About NSS</b></a>
+            <a href="#officer" style="color: #1e3d59; margin: 0 10px;"><b>Program Officer</b></a>
+            <a href="#event" style="color: #1e3d59; margin: 0 10px;"><b>Event Details</b></a>
+        </nav>
+    </header>
+
+    <section id="info" class="section">
+        <h2>About NSS</h2>
+        <img src="NSS.jpg" alt="National Service Schem" style="float: left; margin-right: 20px; width:150px;" />
+        <p>The National Service Scheme (NSS) is a youth program in India that aims to develop the personality and character of students through community service. It was launched in 1969 and has since involved millions of students in activities like literacy drives, environmental conservation, and disaster relief. NSS promotes social responsibility, leadership, and a sense of duty towards society.</p>
+        <p>Depth information: NSS operates through colleges and universities, where volunteers participate in regular activities and special camps. It fosters skills like teamwork, empathy, and civic engagement, making it a cornerstone of youth development in India.</p>
+        <li><u><b>Motto</b></u></li>
+        <p>the Motto of National Services Scheme Is <b>NOT ME BUT YOU</b></p>
+        <li><u><b>Benefits Of Being a NSS Volunteer:</b></u></li>
+        <p>
+            A NSS volunteer who takes part in the community service programme would either be a college level or a senior secondary level student. Being an active member these student volunteers would have the exposure and experience to be the following:
+        </p>
+        <ol>
+            <li>accomplished social leader</li>
+             <li>efficient administrator</li>
+             <li>a person who understands human nature</li>
+
+        </ol>
+    </section>
+
+    <section id="officer" class="section">
+        <h2>NSS Program Officer</h2>
+        <img src=".jpg" alt="NSS Program Officer" style="float: left; margin-right: 20px; width: 150px;"> <!-- Replace with real image URL -->
+        <p>Meet Mr vinod Makawana, the NSS Program Officer at our institution. With over 5 years of experience in youth development, Mr.vinod leads NSS initiatives, organizing events and guiding volunteers. He holds a BCA and MCA in Computer Science .</p>
+        <p>Under his leadership, our NSS unit has successfully conducted numerous activities, including blood donation camps and rural development projects.</p>
+        <img src=".jpg" alt="NSS Program Officer" style="float: left; margin-right: 20px; width: 150px;"> <!-- Replace with real image URL -->
+        <p>Meet Mr Amit Bhaliya, the NSS Program Officer at our institution. With over 10 years of experience in youth development, Mr.Amit leads NSS initiatives, organizing events and guiding volunteers. He holds a BCA and MCA in Computer Science .</p>
+        <p>Under his leadership, our NSS unit has successfully conducted numerous activities, including blood donation camps and rural development projects.</p>
+        <img src=".jpg" alt="NSS Program Officer" style="float: left; margin-right: 20px; width: 150px;"> <!-- Replace with real image URL -->
+        <p>Meet Mr Mayank Goswami the NSS Program Officer at our institution. With over 5 years of experience in youth development, Mr.Mayank leads NSS initiatives, organizing events and guiding volunteers. He holds a BCA and MCA in Computer Science .</p>
+        <p>Under his leadership, our NSS unit has successfully conducted numerous activities, including blood donation camps and rural development projects.</p>
+
+
+    </section>
+
+    <section id="event" class="section">
+        <h2>NSS Activities & Event</h2>
+        <img src="nss-activities.jpg" alt="NSS Activities" class="event-image"> <!-- Replace with real image URL -->
+        <li><u><b>Major Activities:</b></u></li>
+            <b>1. National Integration Camp (NIC):</b>
+            <p> The National Integration Camp (NIC) is organized every year and the duration of each camp is of 7 days with day-night boarding & lodging. These camps are held in different parts of the country. Each camp involves 200 NSS volunteers to undertake the scheduled activities.</p>
+            <b>2. Objectives of the National Integration Camp</b>   
+               <p> Make the NSS volunteers aware of the following:</p>
+                <li>Rich cultural diversity of India</li>
+                <li>History of our diversified culture</li>
+                <li>National pride through knowledge about India</li>
+                <li>To integrate the nation through social service</li>
+                <b>3. NSS Republic Day Parade Camp:</b>
+                <p>The first Republic Day Camp of NSS Volunteers was held in 1988. The camp takes place in Delhi between 1st and 31st January every year with 200 NSS selected volunteers who are good in discipline, March-past and cultural activities. A Contingent of selected NSS volunteers participates in the Republic Day Parade at Rajpath, New Delhi on 26th of January every year in accordance with the guidelines and requisition of the Ministry of Defence.</p>
+            
+                <li>
+                   Objectives of NSS Republic Day Parade Camp
+                </li>
+                <li> Enable the volunteers to interact with fellow members hailing from various parts of India.</li>
+                 <li> Experience the tradition, custom, culture, language of all states of India.</li>
+                  <li>Provide a chance to develop overall personality of the Student volunteers.</li>
+                   <li>Constitute the bond of patriotism, national integration, brotherhood and communal harmony.</li>
+                    <b>4. National Youth Festivals</b>
+                    <p>
+                        National Youth Festivals are organized every year from 12th to 16th January by the Government of India, Ministry of Youth Affairs & Sports in collaboration with the State Governments in different parts of the country. Eminent guests, speakers and youth icons are invited to address and interact with about 1500 participating NSS volunteers during the National Youth Festivals.
+                    </p>
+      </section>
+
+    <footer>
+        <p>Contact: nss@college.edu | Follow us on social media</p>
+    </footer>
+
+    <script>
+        // Simple fade-in animation on scroll
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        });
+        sections.forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>

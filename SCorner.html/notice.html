@@ -1,0 +1,883 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCA Department - Notice Board</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Your exact same CSS - Bootstrap Compatible */
+        :root {
+            --primary-color: #003366;
+            --secondary-color: #0056b3;
+            --accent-color: #e63946;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --border-color: #e0e0e0;
+            --hover-bg: #f1f5f9;
+            --bg-light: #f4f6f8;
+            --white: #ffffff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px !important;
+            padding: 20px !important;
+        }
+
+        /* Header Section */
+        .notice-header {
+            background: #1e3d59;
+            color: var(--white);
+            padding: 25px 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+        }
+
+            .notice-header h1 {
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+                font-weight: 700;
+            }
+
+            .notice-header p {
+                opacity: 0.9;
+                font-size: 0.95rem;
+            }
+
+        /* Search & Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            background: var(--white);
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+            .search-box input {
+                width: 100%;
+                padding: 12px 45px 12px 15px;
+                border: 2px solid var(--border-color);
+                border-radius: 6px;
+                font-size: 0.95rem;
+                transition: var(--transition);
+                box-shadow: none !important;
+            }
+
+                .search-box input:focus {
+                    outline: none;
+                    border-color: var(--primary-color);
+                    box-shadow: none !important;
+                }
+
+            .search-box i {
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--text-light);
+                z-index: 10;
+            }
+
+        .filter-btn {
+            padding: 12px 20px;
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            box-shadow: none !important;
+        }
+
+            .filter-btn:hover, .filter-btn.active {
+                background: var(--primary-color);
+                color: var(--white);
+                border-color: var(--primary-color);
+            }
+
+        /* TABLE GRID LAYOUT */
+        .notice-table-container {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            height: 100% !important;
+            width: 100% !important;
+        }
+
+        .notice-table {
+            width: 100%;
+            height: 100% !important;
+            border-collapse: collapse;
+            margin-bottom: 0 !important;
+        }
+
+        /* Table Header */
+        .table-header {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+            .table-header th {
+                padding: 15px 20px;
+                text-align: left;
+                font-size: 0.85rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            }
+
+        /* Table Rows */
+        .table-row {
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+            .table-row:hover {
+                background-color: var(--hover-bg);
+            }
+
+            .table-row:last-child {
+                border-bottom: none;
+            }
+
+            .table-row td {
+                padding: 15px 20px;
+                vertical-align: middle;
+            }
+
+        /* Column Specific Styling */
+        .col-date {
+            width: 120px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .col-title {
+            width: 45%;
+        }
+
+            .col-title span {
+                color: var(--text-dark);
+                font-weight: 600;
+                font-size: 0.95rem;
+                display: inline;
+            }
+
+        .col-category {
+            width: 120px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+            .category-badge.academic {
+                background: #e8f4fd;
+                color: #0056b3;
+            }
+
+            .category-badge.event {
+                background: #e8f8f5;
+                color: #00b894;
+            }
+
+            .category-badge.exam {
+                background: #fff8e1;
+                color: #f39c12;
+            }
+
+            .category-badge.general {
+                background: #f3e5f5;
+                color: #9b59b6;
+            }
+
+            .category-badge.urgent {
+                background: #ffebee;
+                color: var(--accent-color);
+            }
+
+        .col-action {
+            width: 100px;
+            text-align: center;
+        }
+
+        .btn-view {
+            padding: 8px 16px;
+            background: #3a6ea5;
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+            .btn-view:hover {
+                background: #1e3d59;
+                transform: translateY(-2px);
+                color: var(--white) !important;
+            }
+
+        /* Priority Symbol - URGENT ICON */
+        .urgent-icon {
+            color: var(--accent-color);
+            font-size: 1rem;
+            margin-left: 8px;
+            vertical-align: middle;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            z-index: 1055 !important;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 0;
+            border-radius: 10px;
+            width: 100%;
+            height: 100% !important;
+            max-width: 900px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: none;
+            margin: 1.75rem auto;
+        }
+
+        #noticeModal .modal-dialog {
+            max-width: 95vw;
+            height: 95vh;
+            margin: 1.75rem auto;
+        }
+
+        #noticeModal .modal-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #noticeModal .pdf-preview {
+            flex: 1;
+            min-height: 0;
+        }
+
+        .btn-download-container {
+            flex-shrink: 0;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .pdf-preview {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            background: #f5f5f5;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .pdf-preview embed {
+                width: 100%;
+                height: 100% !important;
+                border: none;
+                oncontextmenu: return false;
+            }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--white);
+            flex-shrink: 0;
+        }
+
+            .modal-header h2 {
+                font-size: 1.2rem;
+                color: var(--primary-color);
+                margin: 0;
+            }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 0;
+            line-height: 1;
+        }
+
+        .btn-download-container {
+            display: flex;
+            justify-content: center;
+            padding: 15px 20px;
+            background: var(--white);
+            border-top: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #27ae60;
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+        }
+
+            .btn-download:hover {
+                background: #219a52;
+                color: var(--white) !important;
+            }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!--main header-->
+
+    <div id="header-container"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="notice-header">
+            <h1><i class="fas fa-bullhorn"></i> Department Notice Board</h1>
+            <p>Stay updated with the latest announcements from BCA Department</p>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="filter-bar">
+            <div class="search-box">
+                <input type="text" placeholder="Search notices...">
+                <i class="fas fa-search"></i>
+            </div>
+            <button class="filter-btn active" data-category="all"><i class="fas fa-filter"></i> All</button>
+            <button class="filter-btn" data-category="academic"><i class="fas fa-book"></i> Academic</button>
+            <button class="filter-btn" data-category="event"><i class="fas fa-calendar-alt"></i> Events</button>
+            <button class="filter-btn" data-category="exam"><i class="fas fa-graduation-cap"></i> Exams</button>
+            <button class="filter-btn" data-category="general"><i class="fas fa-info-circle"></i> General</button>
+        </div>
+
+        <!-- Table Grid -->
+        <div class="notice-table-container">
+            <table class="notice-table">
+                <!-- Table Header -->
+                <thead class="table-header">
+                    <tr>
+                        <th>Date</th>
+                        <th>Notice Title</th>
+                        <th>Category</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <!-- Table Body -->
+                <tbody id="noticeTableBody">
+                    <!-- Rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Notice Detail Modal -->
+    <div class="modal fade" id="noticeModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-file-alt"></i> Notice Details</h2>
+                    <button class="close-modal" onclick="closeModal()">&times;</button>
+                </div>
+
+                <!-- PDF Preview Container - Full Screen -->
+                <div class="pdf-preview" id="pdfPreviewContainer">
+                    <embed src="" type="application/pdf" width="100%" height="100%">
+                </div>
+
+                <!-- Download Button Container - Centered at Bottom -->
+                <div class="btn-download-container">
+                    <button class="btn-download" onclick="downloadFile()">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Your Original JavaScript (Updated for Bootstrap Modal) -->
+    <script>
+        // ============================================
+        // NOTICE BOARD - COMPLETE BOOTSTRAP 5 VERSION
+        // ============================================
+
+        // Sample data for demo (runs only once)
+        if (!localStorage.getItem('notices')) {
+            const sampleNotices = [
+                {
+                    id: 1,
+                    title: "🚨 Midterm Examination Schedule - URGENT",
+                    category: "exam",
+                    date: "2024-01-15",
+                    file: "midterm_schedule.pdf",
+                    fileContent: "", // Add base64 PDF content here if available
+                    isUrgent: true
+                },
+                {
+                    id: 2,
+                    title: "Programming Workshop with Industry Experts",
+                    category: "event",
+                    date: "2024-01-12",
+                    file: "workshop_announcement.pdf",
+                    fileContent: ""
+                },
+                {
+                    id: 3,
+                    title: "Assignment Submission Guidelines Updated",
+                    category: "academic",
+                    date: "2024-01-10",
+                    file: "assignment_guidelines.pdf",
+                    fileContent: ""
+                },
+                {
+                    id: 4,
+                    title: "Department Meeting Notice",
+                    category: "general",
+                    date: "2024-01-08",
+                    file: "dept_meeting.pdf",
+                    fileContent: ""
+                }
+            ];
+            localStorage.setItem('notices', JSON.stringify(sampleNotices));
+        }
+
+        // Global Variables
+        let notices = JSON.parse(localStorage.getItem('notices')) || [];
+        let currentNotice = null;
+        let pdfBlobUrl = null;
+        let modalInstance = null;
+
+        // DOM Elements
+        const tableBody = document.getElementById('noticeTableBody');
+        const searchInput = document.querySelector('.search-box input');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const modalEl = document.getElementById('noticeModal');
+        const pdfPreviewContainer = document.getElementById('pdfPreviewContainer');
+
+        // ============================================
+        // 1. INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Bootstrap Modal
+            modalInstance = new bootstrap.Modal(modalEl, {
+                backdrop: 'static',
+                keyboard: false,
+                focus: true
+            });
+
+            // Render initial table
+            renderTable(notices);
+
+            // Add event listeners
+            initEventListeners();
+        });
+
+        // ============================================
+        // 2. EVENT LISTENERS
+        // ============================================
+        function initEventListeners() {
+            // Search functionality
+            searchInput.addEventListener('input', handleSearch);
+
+            // Filter buttons
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', handleFilter);
+            });
+
+            // Modal events
+            modalEl.addEventListener('hidden.bs.modal', handleModalClose);
+
+            // Close button
+            document.querySelector('.close-modal').addEventListener('click', closeModal);
+
+            // ESC key to close modal
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && modalInstance._isShown) {
+                    closeModal();
+                }
+            });
+        }
+
+        // ============================================
+        // 3. RENDER TABLE FUNCTION
+        // ============================================
+        function renderTable(data) {
+            tableBody.innerHTML = '';
+
+            if (data.length === 0) {
+                tableBody.innerHTML = `
+                            <tr>
+                                <td colspan="4" class="text-center py-5" style="color: var(--text-light); font-style: italic;">
+                                    <i class="fas fa-inbox me-2"></i>No notices found.
+                                </td>
+                            </tr>
+                        `;
+                return;
+            }
+
+            data.forEach(notice => {
+                const row = document.createElement('tr');
+                row.classList.add('table-row');
+
+                let badgeClass = notice.category;
+                if (notice.isUrgent) badgeClass = 'urgent';
+
+                row.innerHTML = `
+                            <td class="col-date">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                ${formatDate(notice.date)}
+                            </td>
+                            <td class="col-title">
+                                <span>${notice.title}</span>
+                                ${notice.isUrgent ? '<i class="fas fa-exclamation-triangle urgent-icon ms-2" title="Urgent Notice"></i>' : ''}
+                            </td>
+                            <td class="col-category">
+                                <span class="category-badge ${badgeClass}">${notice.category.charAt(0).toUpperCase() + notice.category.slice(1)}</span>
+                            </td>
+                            <td class="col-action">
+                                <a href="#" class="btn-view" onclick="viewNotice(${notice.id}); return false;">
+                                    <i class="fas fa-eye me-1"></i>View
+                                </a>
+                            </td>
+                        `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // ============================================
+        // 4. DATE FORMATTING
+        // ============================================
+        function formatDate(dateString) {
+            try {
+                const options = {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                };
+                return new Date(dateString).toLocaleDateString('en-US', options);
+            } catch (e) {
+                return 'Invalid Date';
+            }
+        }
+
+        // ============================================
+        // 5. SEARCH FUNCTIONALITY
+        // ============================================
+        function handleSearch(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            const filtered = notices.filter(notice =>
+                notice.title.toLowerCase().includes(searchTerm) ||
+                notice.category.toLowerCase().includes(searchTerm)
+            );
+            renderTable(filtered);
+        }
+
+        // ============================================
+        // 6. FILTER FUNCTIONALITY
+        // ============================================
+        function handleFilter(e) {
+            // Update active button
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+
+            const category = e.currentTarget.getAttribute('data-category');
+
+            if (category === 'all') {
+                renderTable(notices);
+            } else {
+                const filtered = notices.filter(n => n.category === category);
+                renderTable(filtered);
+            }
+        }
+
+        // ============================================
+        // 7. PDF UTILITIES
+        // ============================================
+        function extractBase64(dataURL) {
+            return dataURL.split(',')[1];
+        }
+
+        function base64ToBinary(base64) {
+            return atob(base64);
+        }
+
+        function generatePDF(title) {
+            return `%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 150 >>
+stream
+BT
+/F1 24 Tf
+100 700 Td
+(NOTICE: ${title}) Tj
+72 650 Td
+(This is a sample PDF generated by Notice Board) Tj
+72 620 Td
+(Date: ${new Date().toLocaleDateString()}) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f
+0000000009 00000 n
+0000000058 00000 n
+0000000115 00000 n
+0000000214 00000 n
+0000000400 00000 n
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+500
+%%EOF`;
+        }
+
+        // ============================================
+        // 8. VIEW NOTICE (MAIN FUNCTION)
+        // ============================================
+        function viewNotice(id) {
+            const notice = notices.find(n => n.id === id);
+            if (!notice) return;
+
+            currentNotice = notice;
+
+            try {
+                // Clean up previous blob
+                if (pdfBlobUrl) {
+                    URL.revokeObjectURL(pdfBlobUrl);
+                }
+
+                // Generate PDF content
+                let pdfContent = notice.fileContent || generatePDF(notice.title);
+
+                // Convert to blob
+                const base64 = extractBase64(pdfContent);
+                const binaryString = base64ToBinary(base64);
+                const blob = new Blob([binaryString], { type: 'application/pdf' });
+                pdfBlobUrl = URL.createObjectURL(blob);
+
+                // Load PDF in embed
+                pdfPreviewContainer.innerHTML = `
+                            <embed src="${pdfBlobUrl}"
+                                   type="application/pdf"
+                                   width="100%"
+                                   height="100%"
+                                   oncontextmenu="return false;">
+                        `;
+
+                // Show modal
+                modalInstance.show();
+
+            } catch (error) {
+                console.error('Error loading PDF:', error);
+                alert('Error loading notice. Please try downloading instead.');
+            }
+        }
+
+        // ============================================
+        // 9. MODAL FUNCTIONS
+        // ============================================
+        function closeModal() {
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+        }
+
+        function handleModalClose() {
+            // Cleanup
+            currentNotice = null;
+            if (pdfBlobUrl) {
+                URL.revokeObjectURL(pdfBlobUrl);
+                pdfBlobUrl = null;
+            }
+            pdfPreviewContainer.innerHTML = '<div class="d-flex justify-content-center align-items-center h-100"><i class="fas fa-file-pdf fa-3x text-muted"></i></div>';
+        }
+
+        // ============================================
+        // 10. DOWNLOAD FUNCTION
+        // ============================================
+        function downloadFile() {
+            if (currentNotice && pdfBlobUrl) {
+                try {
+                    const link = document.createElement('a');
+                    link.href = pdfBlobUrl;
+                    link.download = currentNotice.file || `notice_${currentNotice.id}.pdf`;
+                    link.style.display = 'none';
+
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    // Show success toast (Bootstrap)
+                    showToast('PDF downloaded successfully!', 'success');
+                } catch (error) {
+                    console.error('Download error:', error);
+                    showToast('Download failed. Please try again.', 'danger');
+                }
+            }
+        }
+
+        // ============================================
+        // 11. TOAST NOTIFICATIONS (Bonus Feature)
+        // ============================================
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer') || createToastContainer();
+            const toastId = 'toast_' + Date.now();
+
+            const toastHtml = `
+                        <div id="${toastId}" class="toast align-items-center text-white bg-${type === 'success' ? 'success' : type === 'danger' ? 'danger' : 'primary'} border-0" role="alert">
+                            <div class="d-flex">
+                                <div class="toast-body">${message}</div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                            </div>
+                        </div>
+                    `;
+
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+
+            const toastEl = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+
+            toastEl.addEventListener('hidden.bs.toast', () => {
+                toastEl.remove();
+            });
+        }
+
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toastContainer';
+            container.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+            container.style.zIndex = '1060';
+            document.body.appendChild(container);
+            return container;
+        }
+
+        // ============================================
+        // 12. PUBLIC FUNCTIONS (Global Access)
+        // ============================================
+        window.viewNotice = viewNotice;
+        window.closeModal = closeModal;
+        window.downloadFile = downloadFile;
+
+        // Debug function (remove in production)
+        window.debugNotices = () => console.table(notices);
+
+        console.log('✅ Notice Board JavaScript loaded successfully!');
+        console.log(`📊 Loaded ${notices.length} notices from localStorage`);
+    </script>
+
+    <!--Footer-->
+    <div id="footer-container"></div>
+    <!--JS-->
+
+    <script src="Script.js"></script>
+</body>
+</html>

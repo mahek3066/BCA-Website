@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Time Table - Student View</title>
+    <link rel="stylesheet" href="TimeTable.css" />
+</head>
+<body>
+    <div class="header">
+        <h1>Time Table</h1>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">Available Time Tables</h2>
+
+        <table id="timetableList">
+            <thead>
+                <tr>
+                    <th>Time Table Name</th>
+                    <th>Upload Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="timetableBody">
+                <!-- Timetables will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal for viewing timetable -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" class="modal-title"></h2>
+            <img id="modalImage" class="modal-image" src="" alt="Time Table">
+            <div class="download-section">
+                <button id="modalDownloadBtn" class="download-btn" onclick="downloadFromModal()">Download Time Table</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize timetables from localStorage
+        let timetables = JSON.parse(localStorage.getItem('timetables')) || [];
+
+        // Load timetables on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            loadTimetables();
+        });
+
+        // Load and display timetables
+        function loadTimetables() {
+            const tbody = document.getElementById('timetableBody');
+            const table = document.getElementById('timetableList');
+
+            tbody.innerHTML = '';
+
+            if (timetables.length === 0) {
+                table.style.display = 'none';
+                tbody.innerHTML = '<tr><td colspan="3" class="no-data">No timetables available</td></tr>';
+                return;
+            }
+
+            table.style.display = 'table';
+
+            timetables.forEach(function (timetable) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${timetable.name}</td>
+                        <td>${timetable.uploadDate}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="view-btn" onclick="viewTimetable(${timetable.id})">View</button>
+                                <button class="download-btn" onclick="downloadTimetable(${timetable.id})">Download</button>
+                            </div>
+                        </td>
+                    `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // View timetable image
+        function viewTimetable(id) {
+            const timetable = timetables.find(t => t.id === id);
+            if (!timetable) return;
+
+            document.getElementById('modalTitle').textContent = timetable.name;
+            document.getElementById('modalImage').src = timetable.imageData;
+            document.getElementById('modalDownloadBtn').setAttribute('data-id', id);
+            document.getElementById('viewModal').style.display = 'block';
+        }
+
+        // Download timetable from table button
+        function downloadTimetable(id) {
+            const timetable = timetables.find(t => t.id === id);
+            if (!timetable || !timetable.imageData) {
+                alert('No timetable available for download');
+                return;
+            }
+
+            // Create download link
+            const link = document.createElement('a');
+            link.href = timetable.imageData;
+            link.download = timetable.name.replace(/\s+/g, '_') + '.jpg';
+            link.target = '_blank';
+
+            // Trigger download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Download timetable from modal
+        function downloadFromModal() {
+            const id = parseInt(document.getElementById('modalDownloadBtn').getAttribute('data-id'));
+            downloadTimetable(id);
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('viewModal').style.display = 'none';
+        }s
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('viewModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

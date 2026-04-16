@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>FORM VALIDATION</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 320px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+            input:focus {
+                outline: none;
+                border-color: #4facfe;
+            }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 5px;
+            background: #4facfe;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .err{
+            color:red;
+         
+        }
+
+            button:hover {
+                background: #00c6ff;
+            }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-container">
+        <h2>Register Form</h2>
+
+        <form id="myForm">
+
+            Name:
+            <input type="text" id="name" placeholder="Enter Your Username" />
+            <p class="err"></p>
+            <br /><br />
+
+            Email:
+            <input type="text" id="email" placeholder="Enter Your Email" />
+            <p class="err"></p>
+            <br /><br />    
+
+            Number:
+            <input type="tel" id="num" placeholder="Enter Your Phone Number" />
+            <p class="err"></p>
+            <br /><br />
+
+            <button type="submit">Submit</button>
+
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("myForm").addEventListener("submit", function (event) {
+
+            event.preventDefault(); // Prevent form submission
+
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let num = document.getElementById("num").value.trim();
+
+            // Correct 10 digit phone number format
+            let numformat = /^[0-9]{10}$/;
+                
+            // Name validation
+            if (name === "") {
+                err.style.color = "red";
+
+                return;
+            }
+
+            // Phone validation
+            if (num === "") {
+                alert("Phone number cannot be empty!");
+                return;
+            }
+
+            if (!numformat.test(num)) {
+                alert("Phone number must be exactly 10 digits!");
+                return;
+            }
+
+            // Email validation
+            if (email === "") {
+                alert("Email cannot be empty!");
+                return;
+            }
+
+            let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid email address!");
+                return;
+            }
+
+            // Success
+            alert("Form submitted successfully!");
+        });
+    </script>
+
+</body>
+</html>

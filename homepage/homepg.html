@@ -1,0 +1,593 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCA Official Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+            animation: bodyFade 1.5s ease-in;
+        }
+
+        @keyframes bodyFade {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        /* Particles Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 10s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: white;
+            padding: 1.2rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+            .nav-links li {
+                margin-left: 2.5rem;
+            }
+
+            .nav-links a:hover {
+                color: #ffcc00;
+                transform: scale(1.1) rotate(5deg);
+            }
+        /* Hero Section with Video */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+            .hero video {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                z-index: -1;
+            }
+
+            .hero::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 0;
+            }
+
+        .hero-content {
+            z-index: 1;
+            max-width: 800px;
+            animation: heroSlide 2s ease-out;
+        }
+
+        @keyframes heroSlide {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 4px 4px 8px rgba(0,0,0,0.7);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ffcc00, #ffb300);
+            color: #1e3c72;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+            .btn::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 0;
+                height: 0;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                transition: width 0.6s, height 0.6s;
+            }
+
+            .btn:hover::before {
+                width: 300px;
+                height: 300px;
+            }
+
+            .btn:hover {
+                transform: translateY(-8px) scale(1.05);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            }
+        /* Why Choose Us Section */
+        .why-choose {
+            padding: 6rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            text-align: center;
+            border-radius: 25px;
+            margin: 3rem auto;
+            max-width: 1200px;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+            .why-choose h2 {
+                margin-bottom: 4rem;
+                color: white;
+                font-size: 3rem;
+                font-family: 'Playfair Display', serif;
+            }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            flex: 1;
+            min-width: 220px;
+            margin: 1.5rem;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.4s;
+            position: relative;
+        }
+
+            .stat::before {
+                content: '';
+                position: absolute;
+                top: -10px;
+                left: -10px;
+                right: -10px;
+                bottom: -10px;
+                background: linear-gradient(45deg, #ffcc00, #ffb300);
+                border-radius: 25px;
+                z-index: -1;
+                opacity: 0;
+                transition: opacity 0.4s;
+            }
+
+            .stat:hover::before {
+                opacity: 1;
+            }
+
+            .stat:hover {
+                transform: translateY(-15px) rotateY(10deg);
+            }
+
+            .stat i {
+                font-size: 4rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .stat h3 {
+                font-size: 3rem;
+                margin-bottom: 0.5rem;
+            }
+        /* About Section */
+        .about {
+            padding: 6rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            color: white;
+            border-radius: 25px;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+            .about h2 {
+                margin-bottom: 2rem;
+                font-size: 3rem;
+                font-family: 'Playfair Display', serif;
+            }
+
+            .about p {
+                font-size: 1.3rem;
+                max-width: 900px;
+                margin: 0 auto;
+            }
+        /* Gallery Section */
+        .gallery {
+            padding: 6rem 1rem;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            text-align: center;
+        }
+
+            .gallery h2 {
+                color: white;
+                font-size: 3rem;
+                margin-bottom: 4rem;
+                font-family: 'Playfair Display', serif;
+            }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s;
+            position: relative;
+        }
+
+            .gallery-item img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+                transition: transform 0.4s;
+            }
+
+            .gallery-item:hover img {
+                transform: scale(1.1);
+            }
+
+            .gallery-item::after {
+                content: 'View More';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(0,0,0,0.7);
+                color: white;
+                padding: 1rem;
+                transform: translateY(100%);
+                transition: transform 0.4s;
+            }
+
+            .gallery-item:hover::after {
+                transform: translateY(0);
+            }
+        /* Courses Section */
+        .courses {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 6rem 1rem;
+            text-align: center;
+        }
+
+            .courses h2 {
+                margin-bottom: 4rem;
+                color: white;
+                font-size: 3rem;
+                font-family: 'Playfair Display', serif;
+            }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .course-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transition: all 0.5s;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .course-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,204,0,0.3), transparent);
+                transition: left 0.5s;
+            }
+
+            .course-card:hover::before {
+                left: 100%;
+            }
+
+            .course-card:hover {
+                transform: translateY(-20px) rotateX(5deg);
+                box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            }
+
+            .course-card i {
+                font-size: 4rem;
+                color: #ffcc00;
+                margin-bottom: 1.5rem;
+            }
+
+            .course-card h3 {
+                margin-bottom: 1.5rem;
+                color: white;
+            }
+        /* Testimonials Carousel */
+        .testimonials {
+            padding: 6rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            text-align: center;
+            color: white;
+        }
+
+            .testimonials h2 {
+                font-size: 3rem;
+                margin-bottom: 4rem;
+                font-family: 'Playfair Display', serif;
+            }
+
+        .carousel {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial {
+            display: none;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+            .testimonial.active {
+                display: block;
+            }
+
+            .testimonial p {
+                font-style: italic;
+                margin-bottom: 1.5rem;
+                font-size: 1.2rem;
+            }
+
+            .testimonial cite {
+                font-weight: 700;
+            }
+
+        .dots {
+            margin-top: 2rem;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+            .dot.active {
+                background: #ffcc00;
+            }
+        /* Newsletter Section */
+        .newsletter {
+            padding: 5rem 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+            .newsletter h2 {
+                margin-bottom: 1.5rem;
+                font-size: 2.8rem;
+                font-family: 'Playfair Display', serif;
+            }
+
+            .newsletter form {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .newsletter input {
+                padding: 1rem;
+                width: 75%;
+                border: none;
+                border-radius: 25px 0 0 25px;
+                font-size: 1.1rem;
+            }
+
+            .newsletter button {
+                padding: 1rem 2rem;
+                background: #ffcc00;
+                color: #1e3c72;
+                border: none;
+                border-radius: 0 25px 25px 0;
+                cursor: pointer;
+                font-weight: 700;
+                transition: all 0.3s;
+            }
+
+                .newsletter button:hover {
+                    background: #ffb300;
+                    transform: scale(1.05);
+                }
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+            footer p {
+                margin-bottom: 1.5rem;
+            }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+
+            .course-grid, .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <header>
+        <nav>
+            <div class="logo">BCA University</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#why-choose">Why Choose Us</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <video autoplay muted loop>
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"> <!-- Replace with your video URL -->
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-content">
+            <h1>Welcome to BCA Official Website</h1>
+            <p>Embark on a transformative journey in Computer Applications, blending innovation, creativity, and cutting-edge technology.</p>
+            <button class="btn">Begin Your Adventure</button>
+        </div>
+    </section>
+
+    <section id="why-choose" class="why-choose">
+        <h2>Why Choose BCA?</h

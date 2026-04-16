@@ -1,0 +1,14 @@
+D:\BCAwebsite\homepage\homepage\bin\Debug\net10.0\homepage.exe
+D:\BCAwebsite\homepage\homepage\bin\Debug\net10.0\homepage.deps.json
+D:\BCAwebsite\homepage\homepage\bin\Debug\net10.0\homepage.runtimeconfig.json
+D:\BCAwebsite\homepage\homepage\bin\Debug\net10.0\homepage.dll
+D:\BCAwebsite\homepage\homepage\bin\Debug\net10.0\homepage.pdb
+D:\BCAwebsite\homepage\homepage\obj\Debug\net10.0\homepage.GeneratedMSBuildEditorConfig.editorconfig
+D:\BCAwebsite\homepage\homepage\obj\Debug\net10.0\homepage.AssemblyInfoInputs.cache
+D:\BCAwebsite\homepage\homepage\obj\Debug\net10.0\homepage.AssemblyInfo.cs
+D:\BCAwebsite\homepage\homepage\obj\Debug\net10.0\homepage.csproj.CoreCompileInputs.cache
+D:\BCAwebsite\homepage\homepage\obj\Debug\net10.0\homepage.dll
+D:\BCAwebsite\homepage\homepage\obj\Debug\net10.0\refint\homepage.dll
+D:\BCAwebsite\homepage\homepage\obj\Debug\net10.0\homepage.pdb
+D:\BCAwebsite\homepage\homepage\obj\Debug\net10.0\homepage.genruntimeconfig.cache
+D:\BCAwebsite\homepage\homepage\obj\Debug\net10.0\ref\homepage.dll

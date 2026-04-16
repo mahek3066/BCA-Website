@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCA Syllabus - Official Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <header class="bg-primary text-white py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="#" class="text-white">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-white">Academics</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Syllabus</li>
+                </ol>
+            </nav>
+            <h1 class="mt-2">BCA Syllabus</h1>
+            <div class="row">
+                <div class="col-md-8">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search courses by name or code...">
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-light w-100" onclick="window.print()">Print Syllabus</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <h5>Filters</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" onclick="filterCourses('all')">All Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="filterCourses('sem1')">Semester 1</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="filterCourses('sem2')">Semester 2</a>
+                        </li>
+                        <!-- Add more semesters as needed -->
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h2>Courses</h2>
+                </div>
+                <div id="coursesContainer" class="row">
+                    <!-- Course Card 1 -->
+                    <div class="col-md-6 mb-4 course-card" data-semester="sem1">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>BCA101 - Introduction to Programming</h5>
+                                <small>Credits: 4 | Semester: 1</small>
+                            </div>
+                            <div class="card-body">
+                                <p>Learn the basics of programming using C and Python.</p>
+                                <div class="accordion" id="accordion1">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-1">Objectives</button>
+                                        </h2>
+                                        <div id="collapse1-1" class="accordion-collapse collapse show" data-bs-parent="#accordion1">
+                                            <div class="accordion-body">
+                                                <ul>
+                                                    <li>Understand programming fundamentals.</li>
+                                                    <li>Write basic algorithms.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-2">Topics</button>
+                                        </h2>
+                                        <div id="collapse1-2" class="accordion-collapse collapse" data-bs-parent="#accordion1">
+                                            <div class="accordion-body">
+                                                <ul>
+                                                    <li>Unit 1: Basics of C</li>
+                                                    <li>Unit 2: Loops and Functions</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-3">Assessments</button>
+                                        </h2>
+                                        <div id="collapse1-3" class="accordion-collapse collapse" data-bs-parent="#accordion1">
+                                            <div class="accordion-body">
+                                                <table class="table">
+                                                    <tr><td>Midterm</td><td>30%</td></tr>
+                                                    <tr><td>Final Exam</td><td>50%</td></tr>
+                                                    <tr><td>Labs</td><td>20%</td></tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" class="btn btn-primary mt-2">View Resources</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Card 2 (Add more as needed) -->
+                    <div class="col-md-6 mb-4 course-card" data-semester="sem2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>BCA201 - Database Management Systems</h5>
+                                <small>Credits: 3 | Semester: 2</small>
+                            </div>
+                            <div class="card-body">
+                                <p>Introduction to SQL and relational databases.</p>
+                                <!-- Similar accordion structure -->
+                                <div class="accordion" id="accordion2">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-1">Objectives</button>
+                                        </h2>
+                                        <div id="collapse2-1" class="accordion-collapse collapse show" data-bs-parent="#accordion2">
+                                            <div class="accordion-body">
+                                                <ul>
+                                                    <li>Design and query databases.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Add more sections -->
+                                </div>
+                                <a href="#" class="btn btn-primary mt-2">View Resources</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-3 mt-5">
+        <div class="container text-center">
+            <p>&copy; 2023 BCA Official Website. <a href="#" class="text-white">Download Full Syllabus PDF</a> | <a href="#" class="text-white">Contact Faculty</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script> <!-- Link to your JS file -->
+</body>
+</html>

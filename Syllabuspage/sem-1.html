@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester Syllabi</title>
+    <!-- Include jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #3a6ea5, #1e3d59);
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 20px auto;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+    header {
+        background: linear-gradient(135deg, #1e3d59, #2c5aa0);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 2.5em;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.3);
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .btn i {
+            font-size: 18px;
+        }
+
+    .edit-btn, .save-btn, .add-unit-btn {
+        display: none; /* Hidden by default, shown in edit mode */
+    }
+
+    .info {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 20px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+        .info p {
+            margin: 10px 0;
+            flex: 1 1 200px;
+            font-weight: 500;
+        }
+
+    section {
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+        position: relative;
+    }
+
+    h2 {
+        color: #0056b3;
+        border-bottom: 2px solid #0056b3;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        font-size: 1.8em;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+        ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+    .editable {
+        border: 1px dashed transparent;
+        padding: 5px;
+        border-radius: 5px;
+        transition: border 0.3s ease;
+    }
+
+        .editable:focus {
+            border-color: #0056b3;
+            background: #f0f8ff;
+            outline: none;
+        }
+
+    .add-topic-btn {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.3s ease;
+        display: none; /* Hidden, shown in edit mode */
+    }
+
+        .add-topic-btn:hover {
+            background: #218838;
+        }
+
+    .container-btn {
+        max-width: 900px;
+        margin: 20px auto;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        overflow: hidden;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .download-btn {
+        background: linear-gradient(135deg, #0056b3, #003d82);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 auto;
+    }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+</style>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="course-title">Loading...</h1>
+            <div class="controls">
+                <select id="syllabus-select" class="btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);"></select>
+                <button class="btn edit-btn" onclick="toggleEditMode()"><i class="fas fa-edit"></i> Edit</button>
+                <button class="btn save-btn" onclick="saveChanges()"><i class="fas fa-save"></i> Save</button>
+                <button class="btn add-unit-btn" onclick="addUnit()"><i class="fas fa-plus"></i> Add Unit</button>
+            </div>
+        </header>
+
+        <div class="info" id="course-info">
+            <!-- Course info will be populated here -->
+        </div>
+
+        <div id="units-container">
+            <!-- Units will be populated here -->
+        </div>
+
+        <div class="container-btn">
+            <button class="download-btn" onclick="downloadPDF()"><i class="fas fa-download"></i> Download as PDF</button>
+        </div>
+    </div>
+
+    <script>
+        // Array of syllabi for multiple pages (dynamic)
+        let syllabi = JSON.parse(localStorage.getItem('syllabi')) || [
+            {
+                title: "English",
+                info: {
+                    courseTitle: "English",
+                    courseCode: "12345",
+                    credit: "3",
+                    instructor: "Krupali ma'am",
+                    email: "krupaliruparel@gmail.com",
+                    hours: "15"
+                },
+                units: [
+                    {
+                        title: "Unit - 1",
+                        topics: [
+                            "this is a topic one..",
+                            "this is a topic two...",
+                            "this is a topic three.."
+                        ]
+                    },
+                    {
+                        title: "Unit 2",
+                        topics: [
+                            "Understand basic programming principles.",
+                            "Apply algorithms to solve problems.",
+                            "Develop critical thinking skills in computing."
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        let currentSyllabusIndex = 0;
+        let isEditMode = false;
+
+        // Populate syllabus selector
+        function populateSelector() {
+            const select = document.getElementById('syllabus-select');
+            select.innerHTML = '';
+            syllabi.forEach((syl, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = syl.title;
+                select.appendChild(option);
+            });
+            select.value = currentSyllabusIndex;
+            select.addEventListener('change', (e) => {
+                currentSyllabusIndex = parseInt(e.target.value);
+                loadSyllabus();
+            });
+        }
+
+        // Function to load and populate the page dynamically
+        function loadSyllabus() {
+            const data = syllabi[currentSyllabusIndex];
+            // Populate title
+            document.getElementById('course-title').textContent = data.title;
+
+            // Populate info
+            const infoDiv = document.getElementById('course-info');
+            infoDiv.innerHTML = `
+                    <p><strong>Course Title:</strong> <span class="editable" contenteditable>${data.info.courseTitle}</span></p>
+                    <p><strong>Course Code:</strong> <span class="editable" contenteditable>${data.info.courseCode}</span></p>
+                    <p><strong>Credit:</strong> <span class="editable" contenteditable>${data.info.credit}</span></p>
+                    <p><strong>Instructor:</strong> <span class="editable" contenteditable>${data.info.instructor}</span></p>
+                    <p><strong>Email:</strong> <span class="editable" contenteditable>${data.info.email}</span></p>
+                    <p><strong>Hours:</strong> <span class="editable" contenteditable>${data.info.hours}</span></p>
+                `;
+
+            // Populate units
+            const unitsContainer = document.getElementById('units-container');
+            unitsContainer.innerHTML = '';
+            data.units.forEach((unit, unitIndex) => {
+                const section = document.createElement('section');
+                section.innerHTML = `
+                        <h2 class="editable" contenteditable>${unit.title}</h2>
+                        <ul>
+                            ${unit.topics.map((topic, topicIndex) => `<li><span class="editable" contenteditable>${topic}</span></li>`).join('')}
+                        </ul>
+                        <button class="add-topic-btn" onclick="addTopic(${unitIndex})" title="Add Topic"><i class="fas fa-plus"></i></button>
+                    `;
+                unitsContainer.appendChild(section);
+            });
+        }
+
+        // Toggle edit mode
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const editables = document.querySelectorAll('.editable');
+            editables.forEach(el => {
+                el.contentEditable = isEditMode ? 'true' : 'false';
+            });
+            document.querySelector('.save-btn').style.display = isEditMode ? 'inline-flex' : 'none';
+            document.querySelector('.add-unit-btn').style.display = isEditMode ? 'inline-flex' : 'none';
+            document.querySelectorAll('.add-topic-btn').forEach(btn => {
+                btn.style.display = isEditMode ? 'inline-block' : 'none';
+            });
+        }
+
+        // Save changes to localStorage
+        function saveChanges() {
+            const data = syllabi[currentSyllabusIndex];
+            data.title = document.getElementById('course-title').textContent;
+            const infoSpans = document.querySelectorAll('#course-info .editable');
+            data.info.courseTitle = infoSpans[0].textContent;
+            data.info.courseCode = infoSpans[1].textContent;
+            data.info.credit = infoSpans[2].textContent;
+            data.info.instructor = infoSpans[3].textContent;
+            data.info.email = infoSpans[4].textContent;
+            data.info.hours = infoSpans[5].textContent;
+
+            // Update units
+            const sections = document.querySelectorAll('#units-container section');
+            data.units = Array.from(sections).map(section => {
+                const title = section.querySelector('h2').textContent;
+                const topics = Array.from(section.querySelectorAll('li .editable')).map(span => span.textContent);
+                return { title, topics };
+            });
+
+            localStorage.setItem('syllabi', JSON.stringify(syllabi));
+            alert('Changes saved!');
+            toggleEditMode(); // Exit edit mode
+        }
+
+        // Add a new unit
+        function addUnit() {
+            syllabi[currentSyllabusIndex].units.push({ title: 'New Unit', topics: ['New Topic'] });
+            loadSyllabus();
+        }
+
+        // Add a topic to a unit
+        function addTopic(unitIndex) {
+            syllabi[currentSyllabusIndex].units[unitIndex].topics.push('New Topic');
+            loadSyllabus();
+        }
+
+        // Function to generate and download PDF (unchanged)
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const element = document.querySelector('.container');
+            const content = element.innerText || element.textContent;
+            doc.text(content, 10, 10);
+            doc.save(`${syllabi[currentSyllabusIndex].title}_Syllabus.pdf`);
+        }
+
+        // Initialize
+        window.onload = () => {
+            populateSelector();
+            loadSyllabus();
+        };
+    </script>
+</body>
+</html>

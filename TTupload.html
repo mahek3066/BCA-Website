@@ -1,0 +1,306 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Admin Panel - Upload Time Table</title>
+    <link rel="stylesheet" href="TTupload.css" />
+
+</head>
+<body>
+    <div class="header">
+        <h1>Admin Panel - Upload Time Table</h1>
+    </div>
+    <div class="container">
+        <div class="admin-panel">
+            <h2>📤 Upload Time Table</h2>
+
+            <div id="successMessage" class="success-message"></div>
+
+            <div class="form-group">
+                <label for="timetableName">Time Table Name:</label>
+                <input type="text" id="timetableName" placeholder="Enter timetable name (e.g., BCA Time Table)">
+                <div id="nameError" class="field-error">Please enter a valid timetable name</div>
+            </div>
+
+            <div class="form-group">
+                <label for="timetableImage">Upload Time Table Image:</label>
+                <input type="file" id="timetableImage" accept="image/*" onchange="previewImage()">
+                <div class="file-info">Supported formats: JPG, PNG, GIF (Max size: 5MB)</div>
+                <div id="fileError" class="field-error">Please select a valid image file (Max 5MB)</div>
+            </div>
+
+            <button class="upload-btn" onclick="uploadTimetable()">Upload Time Table</button>
+
+            <!-- Preview Section -->
+            <div class="preview-section" id="previewSection">
+                <h3>Image Preview</h3>
+                <img id="previewImage" class="preview-image" src="" alt="Preview">
+            </div>
+        </div>
+
+        <!-- Uploaded Timetables List -->
+        <div class="uploaded-list">
+            <h3>📋 Uploaded Time Tables</h3>
+            <div id="uploadedItems">
+                <div class="no-data">No timetables uploaded yet</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for viewing timetable -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" class="modal-title"></h2>
+            <img id="modalImage" class="modal-image" src="" alt="Time Table">
+        </div>
+    </div>
+
+    <!-- Custom Delete Confirmation Card -->
+    <div id="deleteConfirmOverlay" class="delete-confirm-overlay" onclick="closeDeleteConfirm()"></div>
+    <div id="deleteConfirmCard" class="delete-confirm-card">
+        <div class="delete-confirm-icon">⚠️</div>
+        <div class="delete-confirm-title">Delete Time Table?</div>
+        <div class="delete-confirm-message">Are you sure you want to delete this timetable? This action cannot be undone.</div>
+        <div class="confirm-btn-group">
+            <button class="confirm-cancel-btn" onclick="closeDeleteConfirm()">Cancel</button>
+            <button class="confirm-delete-btn" onclick="confirmDelete()">Delete</button>
+        </div>
+    </div>
+    <script>
+        // Initialize timetables array from localStorage
+        let timetables = JSON.parse(localStorage.getItem('timetables')) || [];
+
+        // Load timetables on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            loadTimetables();
+        });
+
+        // Preview image before upload
+        function previewImage() {
+            const input = document.getElementById('timetableImage');
+            const previewSection = document.getElementById('previewSection');
+            const previewImage = document.getElementById('previewImage');
+            const fileError = document.getElementById('fileError');
+
+            // Clear previous errors when user selects a file
+            clearError(input, fileError);
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    previewSection.style.display = 'block';
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                previewSection.style.display = 'none';
+            }
+        }
+
+        // Function to show error (Red line)
+        function showError(inputElement, errorDiv, message) {
+            inputElement.classList.add('input-error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        // Function to clear error
+        function clearError(inputElement, errorDiv) {
+            inputElement.classList.remove('input-error');
+            errorDiv.style.display = 'none';
+        }
+
+        // Upload new timetable
+        function uploadTimetable() {
+            const nameInput = document.getElementById('timetableName');
+            const imageInput = document.getElementById('timetableImage');
+            const nameError = document.getElementById('nameError');
+            const fileError = document.getElementById('fileError');
+            const successMsg = document.getElementById('successMessage');
+
+            // Hide success message initially
+            successMsg.style.display = 'none';
+
+            // Clear previous errors
+            clearError(nameInput, nameError);
+            clearError(imageInput, fileError);
+
+            let isValid = true;
+            const name = nameInput.value.trim();
+
+            // Validate Name
+            if (!name) {
+                showError(nameInput, nameError, "Please enter a timetable name");
+                isValid = false;
+            }
+
+            // Validate File
+            if (!imageInput.files || !imageInput.files[0]) {
+                showError(imageInput, fileError, "Please select an image file");
+                isValid = false;
+            } else {
+                const file = imageInput.files[0];
+
+                // Validate file type
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!validTypes.includes(file.type)) {
+                    showError(imageInput, fileError, "Invalid file format. Use JPG, PNG, or GIF");
+                    isValid = false;
+                }
+                // Validate file size (max 5MB)
+                else if (file.size > 5 * 1024 * 1024) {
+                    showError(imageInput, fileError, "File size exceeds 5MB limit");
+                    isValid = false;
+                }
+            }
+
+            if (!isValid) {
+                return; // Stop upload if validation fails
+            }
+
+            // Proceed with upload
+            const file = imageInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const newTimetable = {
+                    id: Date.now(),
+                    name: name,
+                    uploadDate: new Date().toISOString().split('T')[0],
+                    imageData: e.target.result,
+                    fileName: file.name
+                };
+
+                timetables.push(newTimetable);
+                saveToLocalStorage();
+                loadTimetables();
+
+                // Clear form
+                nameInput.value = '';
+                imageInput.value = '';
+                document.getElementById('previewSection').style.display = 'none';
+
+                // Show success message
+                successMsg.textContent = 'Time Table uploaded successfully!';
+                successMsg.style.display = 'block';
+
+                // Auto hide success message
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+            };
+
+            reader.onerror = function () {
+                alert("Error reading file. Please try again.");
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        // Load and display uploaded timetables
+        function loadTimetables() {
+            const container = document.getElementById('uploadedItems');
+
+            if (timetables.length === 0) {
+                container.innerHTML = '<div class="no-data">⚠️ No timetables uploaded yet</div>';
+                return;
+            }
+
+            let html = '';
+            timetables.forEach(function (timetable) {
+                html += `
+    <div class="uploaded-item">
+        <div class="uploaded-item-info">
+            <div class="uploaded-item-name">${timetable.name}</div>
+            <div class="uploaded-item-date">Uploaded on: ${timetable.uploadDate}</div>
+        </div>
+        <div class="uploaded-item-actions">
+            <button class="view-btn" onclick="viewTimetable(${timetable.id})">View</button>
+            <button class="delete-btn" onclick="showDeleteConfirm(${timetable.id})">Delete</button>
+        </div>
+    </div>
+`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // View timetable image
+        function viewTimetable(id) {
+            const timetable = timetables.find(t => t.id === id);
+            if (!timetable) return;
+
+            document.getElementById('modalTitle').textContent = timetable.name;
+            document.getElementById('modalImage').src = timetable.imageData;
+            document.getElementById('viewModal').style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('viewModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('viewModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Show custom delete confirmation card
+        function showDeleteConfirm(id) {
+            deleteTimetableId = id;
+            document.getElementById('deleteConfirmOverlay').style.display = 'block';
+            document.getElementById('deleteConfirmCard').style.display = 'block';
+        }
+
+        // Close delete confirmation card
+        function closeDeleteConfirm() {
+            deleteTimetableId = null;
+            document.getElementById('deleteConfirmOverlay').style.display = 'none';
+            document.getElementById('deleteConfirmCard').style.display = 'none';
+        }
+
+        // Confirm delete action
+        function confirmDelete() {
+            if (deleteTimetableId) {
+                timetables = timetables.filter(t => t.id !== deleteTimetableId);
+                saveToLocalStorage();
+                loadTimetables();
+
+                // Show success message
+                const successMsg = document.getElementById('successMessage');
+                successMsg.textContent = 'Time Table deleted successfully!';
+                successMsg.style.display = 'block';
+
+                // Auto hide success message
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+
+                // Close confirmation card
+                closeDeleteConfirm();
+            }
+        }
+
+        // Close delete confirmation when clicking outside
+        document.getElementById('deleteConfirmOverlay').addEventListener('click', function () {
+            closeDeleteConfirm();
+        });
+
+        // Save to localStorage
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('timetables', JSON.stringify(timetables));
+            } catch (e) {
+                console.error('Error saving to localStorage:', e);
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCA Semester 1 Syllabus - Animated Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            z-index: 1000;
+            animation: fadeOut 3s ease-in-out 2s forwards;
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+        h1 {
+            text-align: center;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24, #ff6b6b);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3.5em;
+            font-weight: 700;
+            text-shadow: 0 0 30px rgba(0,0,0,0.2);
+            animation: gradientShift 4s ease-in-out infinite, bounceIn 2s ease-out;
+            margin-bottom: 10px;
+        }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        .subtitle {
+            text-align: center;
+            color: #fff;
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            font-style: italic;
+            animation: fadeInUp 1.5s ease-out 1s both;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #search {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.9);
+            font-size: 1.1em;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+            display: block;
+        }
+        #search:focus {
+            outline: none;
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+            border-color: #4ecdc4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .subject {
+            background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.8));
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .subject::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+        }
+        .subject:hover::before { left: 100%; }
+        .subject:hover {
+            transform: translateY(-10px) rotateX(2deg) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+        }
+        h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        h2:hover {
+            color: #e74c3c;
+            transform: translateX(10px);
+        }
+        h2 i {
+            margin-right: 15px;
+            font-size: 1.5em;
+            animation: spin 3s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .credits {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 1.2em;
+            background: linear-gradient(45deg, #e74c3c, #f39c12);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease;
+        }
+        .subject.expanded ul { max-height: 600px; }
+        li {
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.1em;
+            animation: slideInRight 0.5s ease-out;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        li::before {
+            content: '✨';
+            color: #27ae60;
+            font-size: 1.2em;
+            position: absolute;
+            left: 0;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+        #progress-container {
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        #progress {
+            width: 100%;
+            height: 30px;
+            background: #ecf0f1;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #27ae60, #2ecc71, #f1c40f);
+            transition: width 1.5s ease;
+            position: relative;
+        }
+        #progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        #progress-text {
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        #theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: all 0.4s ease;
+            font-size: 1.2em;
+            z-index: 10;
+        }
+        #theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        }
+        .dark-mode {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #ecf0f1;
+        }
+        .dark-mode .subject {
+            background: linear-gradient(145deg, rgba(44,62,80,0.95), rgba(44,62,80,0.8));
+            color: #ecf0f1;
+        }
+        .dark-mode h2 { color: #ecf0f1; }
+        .dark-mode #search { background: rgba(44,62,80,0.9); color: #ecf0f1; }
+        #quiz {
+            background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.8));
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        #quiz h3 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        #quiz p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        #quiz button {
+            margin: 10px;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        #quiz button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        #quiz-result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: #fff;
+            font-size: 1em;
+            padding: 20px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 15px;
+        }
+        footer a {
+            color: #4ecdc4;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        footer a:hover { color: #ff6b6b; }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .subject { padding: 20px; }
+            #search { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">Welcome to BCA Syllabus</div>
+    <h1><i class="fas fa-graduation-cap"></i> BCA Semester 1 Syllabus</h1>
+    <p class="subtitle">Beautifully designed for an attractive user experience. Explore with animations and interactivity!</p>
+    <input type="text" id="search" placeholder="Search subjects...">
+    <div class="container">
+        <div id="progress-container">
+            <div id="progress">
+                <div id="progress-bar"></div>
+            </div>
+            <p id="progress-text">Subjects Explored: 0/5</p>
+        </div>
+        <div class="subject">
+            <h2><i class="fas fa-desktop"></i> 1. Computer Basics and PC Software</h2>
+            <p class="credits">Credits: 4</p>
+            <p><strong>Objective:</strong> Master fundamentals of computers and essential software tools.</p>
+            <ul>
+                <li>Computer System: Hardware components, software types, operating systems.</li>
+                <li>MS Office Suite: Word, Excel, PowerPoint for productivity.</li>
+                <li>Practicals: Hands-on exercises with 60% weight in assessment.</li>
+            </ul>
+        </div>
+        <div class="subject">
+            <h2><i class="fas fa-calculator"></i> 2. Mathematics</h2>
+            <p class="credits">Credits: 4</p>
+            <p><strong>Objective:</strong> Build a strong mathematical foundation for computer science.</p>
+            <ul>
+                <li>Algebra: Sets, relations, matrices.</li>
+                <li>Calculus: Basic limits, derivatives, integrals.</li>
+                <li>Discrete Mathematics: Logic, graphs, probability.</li>
+                <li>Practicals: Problem-solving with 100% theory focus.</li>
+            </ul>
+        </div>
+        <div class="subject">
+            <h2><i class="fas fa-code"></i> 3. Programming in C/C++</h2>
+            <p class="credits">Credits: 4</p>
+            <p><strong>Objective:</strong> Learn procedural programming languages.</p>
+            <ul>
+                <li>Basics: Variables, data types, control structures.</li>
+                <li>Advanced: Functions, arrays, pointers, file handling.</li>
+                <li>Practicals: Coding labs and debugging exercises.</li>
+            </ul>
+        </div>
+        <div class="subject">
+            <h2><i class="fas fa-book-open"></i> 4. English/Communication Skills</h2>
+            <p class="credits">Credits: 4</p>
+            <p><strong>Objective:</strong> Enhance language and communication abilities.</p>
+            <ul>
+                <li>Grammar: Parts of speech, tenses, vocabulary.</li>
+                <li>Writing: Essays, reports, emails.</li>
+                <li>Speaking: Presentations, discussions.</li>
+                <li>Practicals: Oral and written assignments.</li>
+            </ul>
+        </div>
+        <div class="subject">
+            <h2><i class="fas fa-globe"></i> 5. Web Designing/Web Technology</h2>
+            <p class="credits">Credits: 4</p>
+            <p><strong>Objective:</strong> Introduction to web development basics.</p>
+            <ul>
+                <li>HTML: Structure, tags, forms, tables.</li>
+                <li>CSS: Styling, layouts, responsive design.</li>
+                <li>Principles: UI/UX, tools, SEO basics.</li>
+                <li>Practicals: Build static websites and projects.</li>
+            </ul>
+        </div>
+        <div id="quiz">
+            <h3><i class="fas fa-question-circle"></i> Quick Quiz</h3>
+            <p>How many credits does the Mathematics subject have?</p>
+            <button onclick="

@@ -1,0 +1,233 @@
+﻿/* =========================
+   Global Styles
+========================= */
+body {
+    font-family: 'Oswald', sans-serif;
+    background-color: #f0f8ff;
+}
+
+h3, h4, p {
+    color: #2a7f62;
+}
+
+.container-fluid a {
+    color: white;
+}
+
+    .container-fluid a:hover {
+        background-color: white;
+        color: #1e3d59;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+/* =========================
+   Top Bar
+========================= */
+.top-bar {
+    background: #1e3d59;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+/* =========================
+   Navbar
+========================= */
+.navbar {
+    background: #3a6ea5;
+}
+
+    .navbar a {
+        color: #ffffff !important;
+        margin: 0 10px;
+    }
+
+.navbar-nav .nav-link {
+    color: #ffffff;
+    padding: 10px 18px;
+    margin: 0 5px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+    .navbar-nav .nav-link:hover {
+        background-color: #1e3d59;
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .navbar-nav .nav-link.active {
+        background-color: #ff9800;
+        color: #000;
+        font-weight: bold;
+    }
+
+/* =========================
+   Header Logos
+========================= */
+.header-logo {
+    background-color: #1e3d59;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.header-logo2 {
+    background-color: #1e3d59;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* =========================
+   Section Titles
+========================= */
+.college-title {
+    color: #1e3d59;
+    font-weight: 700; /* FIX: makes it bold */
+}
+
+.college-subtitle {
+    color: #1e3d59;
+    font-weight: 500;
+}
+
+.section-title {
+    color: #1e3d59;
+}
+/* =========================
+   Carousel / Slider
+========================= */
+.carousel-item img {
+    height: auto;
+    object-fit: cover;
+}
+
+.tab {
+    background: #f0f0f0;
+    border: none;
+    padding: 15px 30px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: all 0.5s ease;
+    font-weight: bold;
+    color: #333;
+}
+
+    .tab:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .tab.active {
+        background: #764ba2;
+        color: white;
+        transform: scale(1.1);
+    }
+
+.section {
+    display: none;
+    padding: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+    animation: sectionFade 1s ease-out;
+}
+
+    .section.active {
+        display: block;
+    }
+
+.subject-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.subject-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.5s ease;
+    text-align: center;
+    animation: cardSlideUp 0.8s ease-out;
+}
+
+    .subject-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        background: #1e3d59;
+        color: white;
+    }
+
+a {
+    font-size: 30px;
+    text-decoration: none;
+    color: black;
+}
+
+    a:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        background: #1e3d59;
+        color: white;
+    }
+   
+/* =========================
+   Footer
+========================= */
+.footer {
+    background: linear-gradient(135deg, #1e3d59, #3a6ea5);
+    color: #ffffff;
+    padding: 45px 20px 30px;
+    margin-top: 40px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1 1 280px;
+    margin: 15px;
+}
+
+    .footer-section h5 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #eaf6ff;
+        border-bottom: 2px solid rgba(255,255,255,0.4);
+        display: inline-block;
+        padding-bottom: 6px;
+    }
+
+    .footer-section p {
+        font-size: 14px;
+        margin: 6px 0;
+        color: #f1f8f6;
+    }
+
+        .footer-section p i {
+            color: #b2dfdb;
+            margin-right: 6px;
+        }
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    font-size: 13px;
+    color: #e0f2f1;
+}
+
+.designer {
+    font-style: italic;
+    color: #c8f7e4;
+}

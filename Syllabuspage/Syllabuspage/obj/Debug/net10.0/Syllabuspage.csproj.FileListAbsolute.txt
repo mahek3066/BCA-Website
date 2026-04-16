@@ -1,0 +1,14 @@
+D:\BCAwebsite\Syllabuspage\Syllabuspage\bin\Debug\net10.0\Syllabuspage.exe
+D:\BCAwebsite\Syllabuspage\Syllabuspage\bin\Debug\net10.0\Syllabuspage.deps.json
+D:\BCAwebsite\Syllabuspage\Syllabuspage\bin\Debug\net10.0\Syllabuspage.runtimeconfig.json
+D:\BCAwebsite\Syllabuspage\Syllabuspage\bin\Debug\net10.0\Syllabuspage.dll
+D:\BCAwebsite\Syllabuspage\Syllabuspage\bin\Debug\net10.0\Syllabuspage.pdb
+D:\BCAwebsite\Syllabuspage\Syllabuspage\obj\Debug\net10.0\Syllabuspage.GeneratedMSBuildEditorConfig.editorconfig
+D:\BCAwebsite\Syllabuspage\Syllabuspage\obj\Debug\net10.0\Syllabuspage.AssemblyInfoInputs.cache
+D:\BCAwebsite\Syllabuspage\Syllabuspage\obj\Debug\net10.0\Syllabuspage.AssemblyInfo.cs
+D:\BCAwebsite\Syllabuspage\Syllabuspage\obj\Debug\net10.0\Syllabuspage.csproj.CoreCompileInputs.cache
+D:\BCAwebsite\Syllabuspage\Syllabuspage\obj\Debug\net10.0\Syllabuspage.dll
+D:\BCAwebsite\Syllabuspage\Syllabuspage\obj\Debug\net10.0\refint\Syllabuspage.dll
+D:\BCAwebsite\Syllabuspage\Syllabuspage\obj\Debug\net10.0\Syllabuspage.pdb
+D:\BCAwebsite\Syllabuspage\Syllabuspage\obj\Debug\net10.0\Syllabuspage.genruntimeconfig.cache
+D:\BCAwebsite\Syllabuspage\Syllabuspage\obj\Debug\net10.0\ref\Syllabuspage.dll

@@ -1,0 +1,578 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Service Scheme (NSS)</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="NSS.css" />
+</head>
+<style>
+    /* Global Styles - Bootstrap compatible */
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.8;
+    }
+
+    /* Header */
+    .header {
+        background-color: #1e3d59;
+        color: white;
+        text-align: center;
+        padding: 50px 20px;
+    }
+
+        .header h1 {
+            margin: 0;
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        .header .motto {
+            color: #CAF0F8;
+            font-style: italic;
+            margin-top: 15px;
+            font-size: 24px;
+        }
+
+        .header .tagline {
+            margin-top: 10px;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+    /* Container */
+    .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 30px;
+    }
+
+    /* Section */
+    .section {
+        margin-bottom: 40px;
+    }
+
+        .section h2 {
+            color: #1e3d59;
+            border-bottom: 3px solid #ff9800;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .section img {
+            max-width: 100%;
+            border-radius: 8px;
+            display: block;
+            margin: 20px auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .section p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .section ul {
+            margin-left: 30px;
+            margin-top: 15px;
+        }
+
+        .section li {
+            margin-bottom: 12px;
+            padding-left: 10px;
+        }
+
+    /* Footer */
+    .footer {
+        background-color: #1e3d59;
+        color: white;
+        text-align: center;
+        padding: 30px;
+        margin-top: 40px;
+    }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+    /* Objectives Section */
+    .objectives-section {
+        padding: 60px 20px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        text-align: center;
+        color: #1e3d59;
+        font-size: 36px;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 1000px;
+            height: 4px;
+            background: #ff9800;
+            margin: 15px auto 0;
+        }
+
+    /* Bootstrap Grid Integration */
+    .objectives-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+
+    .objective-card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: flex-start;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .objective-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+    .objective-number {
+        background: #1e3d59;
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: bold;
+        flex-shrink: 0;
+        margin-right: 20px;
+    }
+
+    .objective-content h3 {
+        color: #1e3d59;
+        margin: 0 0 8px 0;
+        font-size: 18px;
+    }
+
+    .objective-content p {
+        color: #666;
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* Category Section - Bootstrap Grid Compatible */
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .category-card {
+        background: white;
+        padding: 0;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+        text-decoration: none;
+        color: #333;
+        overflow: hidden;
+        display: block;
+    }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .category-card .card-image {
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+
+            .category-card .card-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .category-card .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+            display: block;
+            padding: 30px 0;
+        }
+
+        .category-card h3 {
+            color: #1e3d59;
+            margin: 10px 0 5px;
+            font-size: 18px;
+            padding: 0 10px;
+        }
+
+        .category-card .count {
+            color: #666;
+            font-size: 13px;
+            display: block;
+            padding-bottom: 15px;
+        }
+
+    /* Responsive - Bootstrap Enhanced */
+    @media (max-width: 768px) {
+        .objectives-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .category-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .header h1 {
+            font-size: 32px;
+        }
+
+        .section-title::after {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .category-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+    }
+
+    /* Additional sections styles remain the same */
+    .admin-link {
+        display: block;
+        text-align: center;
+        margin-top: 40px;
+        padding: 15px;
+        background: #ff9800;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+        .admin-link:hover {
+            background-color: #e68900;
+        }
+</style>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>National Service Scheme</h1>
+        <p class="motto">"Not Me, But You"</p>
+        <p class="tagline">Empowering Youth, Serving Nation</p>
+    </div>
+
+    <div class="container">
+        <!-- Main Image -->
+        <div class="section">
+            <img src="nss.jpg" alt="NSS" class="img-fluid rounded shadow">
+        </div>
+
+        <!-- Introduction -->
+        <div class="section">
+            <h2>Introduction</h2>
+            <div class="row">
+                <div class="col-12">
+                    <p>
+                        The <strong>National Service Scheme (NSS)</strong> is one of the most prominent youth organizations in India, established with the aim of developing the personality of student youth through community service. Launched on <strong>24th September 1969</strong> by the Ministry of Education, Government of India, this scheme was introduced to commemorate the birth centenary of Mahatma Gandhi.
+                    </p>
+                    <p>
+                        Guided by the motto <strong>"Not Me, But You"</strong>, NSS embodies the spirit of selfless service and encourages students to prioritize the needs of the community over their personal interests. The scheme has grown to become one of the largest student volunteer organizations in the world.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- History -->
+        <div class="section">
+            <h2>History</h2>
+            <div class="row">
+                <div class="col-12">
+                    <p>
+                        When it was first launched on 24th September 1969, the NSS began with a modest beginning of <strong>37 universities</strong> and approximately <strong>40,000 student volunteers</strong>. The scheme was inspired by the ideals of Mahatma Gandhi and aimed to establish a meaningful linkage between education and social service.
+                    </p>
+                    <p>
+                        Over the past five decades, the NSS has grown exponentially and now stands as one of the largest youth organizations in the world. Today, it covers over <strong>900+ universities</strong>, <strong>18,000+ colleges</strong>, and has mobilized more than <strong>38 lakh (3.8 million) student volunteers</strong> across India.
+                    </p>
+                    <p>
+                        The first NSS unit was started at 37 universities with 40,000 volunteers in 1969. Since then, the scheme has expanded to cover all states and union territories of India, making it a truly national movement for youth engagement in social service.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Objectives Section -->
+        <div class="objectives-section">
+            <h2 class="section-title">Objectives of NSS</h2>
+
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="objective-card">
+                        <div class="objective-number">1</div>
+                        <div class="objective-content">
+                            <h3>Personality Development</h3>
+                            <p>Through community service, students develop their overall personality including communication skills, confidence, and self-esteem.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="objective-card">
+                        <div class="objective-number">2</div>
+                        <div class="objective-content">
+                            <h3>Social Responsibility</h3>
+                            <p>Instilling social responsibility and civic consciousness among students to understand and address community problems.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="objective-card">
+                        <div class="objective-number">3</div>
+                        <div class="objective-content">
+                            <h3>National Integration</h3>
+                            <p>Promoting national integration and communal harmony by bringing together students from different backgrounds.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="objective-card">
+                        <div class="objective-number">4</div>
+                        <div class="objective-content">
+                            <h3>Leadership Development</h3>
+                            <p>Cultivating leadership and organizational skills through planning and executing various community service activities.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="objective-card">
+                        <div class="objective-number">5</div>
+                        <div class="objective-content">
+                            <h3>Environmental Awareness</h3>
+                            <p>Creating environmental awareness and promoting conservation of natural resources through tree plantation and cleanliness drives.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="objective-card">
+                        <div class="objective-number">6</div>
+                        <div class="objective-content">
+                            <h3>Disaster Preparedness</h3>
+                            <p>Training students in disaster preparedness and response to help during natural calamities and emergencies.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="objective-card">
+                        <div class="objective-number">7</div>
+                        <div class="objective-content">
+                            <h3>Moral and Ethical Values</h3>
+                            <p>Imparting moral and ethical values to students to become responsible citizens with strong character.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="objective-card">
+                        <div class="objective-number">8</div>
+                        <div class="objective-content">
+                            <h3>Community Service</h3>
+                            <p>Providing opportunities for community service and encouraging students to actively participate in social welfare programs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activities -->
+        <div class="section">
+            <h2>Our Activities</h2>
+            <div class="row">
+                <div class="col-12">
+                    <p>
+                        NSS organizes various activities throughout the year to serve the community and develop students. These activities are broadly categorized into regular activities and special camping programs.
+                    </p>
+                    <ul>
+                        <li><strong>Blood Donation Camps</strong> - Organizing voluntary blood donation drives to save lives</li>
+                        <li><strong>Tree Plantation Drives</strong> - Planting trees for environmental conservation and green India</li>
+                        <li><strong>Health Awareness Campaigns</strong> - Creating awareness about health, hygiene, and disease prevention</li>
+                        <li><strong>Literacy Programs</strong> - Teaching underprivileged children and adults to read and write</li>
+                        <li><strong>Clean-up Drives (Swachh Bharat)</strong> - Promoting cleanliness and sanitation in public places</li>
+                        <li><strong>Disaster Relief Activities</strong> - Helping during natural calamities and emergencies</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories/Gallery -->
+        <div class="section">
+            <h2>Gallery</h2>
+
+            <div id="activityGrid" class="category-grid">
+                <!-- Categories will be injected here by JavaScript -->
+            </div>
+
+            <!-- JavaScript Code -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+                // 1. Define all possible activity categories
+                const categories = [
+                    { id: 'Blood Donation', name: 'Blood Donation', icon: '🩸' },
+                    { id: 'Tree Plantation', name: 'Tree Plantation', icon: '🌱' },
+                    { id: 'Clean-up', name: 'Clean-up Drive', icon: '🧹' },
+                    { id: 'Health', name: 'Health Camp', icon: '🏥' },
+                    { id: 'Literacy', name: 'Literacy Program', icon: '📚' },
+                    { id: 'NSS Camp', name: 'NSS Camp', icon: '⛺' },
+                    { id: 'Women Empowerment', name: 'Women Empowerment', icon: '👩‍🎓' },
+                    { id: 'Old Age Home', name: 'Old Age Home', icon: '👴' },
+                    { id: 'Road Safety', name: 'Road Safety', icon: '🚦' },
+                    { id: 'Other', name: 'Other', icon: '📌' }
+                ];
+
+                // 2. Function to load categories with cover images
+                function loadActivityCategories() {
+                    const grid = document.getElementById('activityGrid');
+
+                    if (!grid) {
+                        console.error('activityGrid element not found!');
+                        return;
+                    }
+
+                    // Get photos from browser storage (uploaded by admin)
+                    let allPhotos = [];
+                    const stored = localStorage.getItem('nssGallery');
+                    if (stored) {
+                        try {
+                            allPhotos = JSON.parse(stored);
+                        } catch (e) {
+                            console.error('Error parsing stored photos:', e);
+                            allPhotos = [];
+                        }
+                    }
+
+                    // Get custom category cover images from localStorage
+                    let categoryCovers = {};
+                    const storedCovers = localStorage.getItem('categoryCovers');
+                    if (storedCovers) {
+                        try {
+                            categoryCovers = JSON.parse(storedCovers);
+                        } catch (e) {
+                            console.error('Error parsing category covers:', e);
+                        }
+                    }
+
+                    // Count photos and get first photo as fallback cover
+                    const categoryCounts = {};
+                    const categoryCover = {};
+
+                    allPhotos.forEach(photo => {
+                        const cat = photo.caption;
+
+                        // Count photos
+                        categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+
+                        // Set first photo as fallback cover if no custom cover exists
+                        if (!categoryCover[cat] && photo.image) {
+                            categoryCover[cat] = photo.image;
+                        }
+                    });
+
+                    // Create HTML for categories that have photos
+                    let html = '';
+                    categories.forEach(cat => {
+                        const count = categoryCounts[cat.id] || 0;
+
+                        // Priority: Custom cover image > First uploaded photo > Emoji icon
+                        const customCover = categoryCovers[cat.id];
+                        const fallbackCover = categoryCover[cat.id];
+
+                        // Only show categories that have at least 1 photo
+                        if (count > 0 || customCover) {
+                            let displayContent = '';
+
+                            if (customCover) {
+                                // Use custom cover image uploaded by admin
+                                displayContent = `
+                                                <div class="card-image">
+                                                    <img src="${customCover}" alt="${cat.name}" class="img-fluid">
+                                                </div>
+                                            `;
+                            } else if (fallbackCover) {
+                                // Use first uploaded photo as cover
+                                displayContent = `
+                                                <div class="card-image">
+                                                    <img src="${fallbackCover}" alt="${cat.name}" class="img-fluid">
+                                                </div>
+                                            `;
+                            } else {
+                                // Use emoji icon if no photos
+                                displayContent = `
+                                                <span class="icon">${cat.icon}</span>
+                                            `;
+                            }
+
+                            html += `
+                                            <a href="NSSgallery.html?category=${encodeURIComponent(cat.id)}" class="category-card">
+                                                ${displayContent}
+                                                <h3>${cat.name}</h3>
+                                                <span class="count">${count} photo${count !== 1 ? 's' : ''}</span>
+                                            </a>
+                                        `;
+                        }
+                    });
+
+                    // If no photos uploaded yet
+                    if (html === '') {
+                        html = '<div class="col-12"><p class="text-center text-muted fs-5 py-5">No photos yet. Admin can upload from Admin Panel!</p></div>';
+                    }
+
+                    grid.innerHTML = html;
+                }
+
+                // 3. Run the function when page loads
+                document.addEventListener('DOMContentLoaded', loadActivityCategories);
+            </script>
+        </div>
+    </div>
+</body>
+</html>
